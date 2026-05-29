@@ -3,13 +3,23 @@ import { getFirestore, collection, query, where, getDocs, getDoc, setDoc, doc, u
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js';
 
 // ЗАМЕНИ НА СВОЙ КОНФИГ ИЗ FIREBASE CONSOLE
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyAk7KIpPcBUCphtRFza_YumrN2oEN5eoik",
-    authDomain: "oleg-131d1.firebaseapp.com",
-    projectId: "oleg-131d1",
-    storageBucket: "oleg-131d1.firebasestorage.app",
-    messagingSenderId: "513374206627",
-    appId: "1:513374206627:web:6dba31687022a8a21f5d16"
+  apiKey: "AIzaSyAk7KIpPcBUCphtRFza_YumrN2oEN5eoik",
+  authDomain: "oleg-131d1.firebaseapp.com",
+  projectId: "oleg-131d1",
+  storageBucket: "oleg-131d1.firebasestorage.app",
+  messagingSenderId: "513374206627",
+  appId: "1:513374206627:web:6dba31687022a8a21f5d16"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
 };
 
 const app = initializeApp(firebaseConfig);
