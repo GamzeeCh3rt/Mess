@@ -1,14 +1,7 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js';
-import { getFirestore, collection, query, where, getDocs, getDoc, setDoc, doc, updateDoc, onSnapshot, addDoc, orderBy } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
+import { getFirestore, collection, query, where, getDocs, getDoc, setDoc, doc, updateDoc, onSnapshot, addDoc, orderBy, writeBatch } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js';
 
-// ЗАМЕНИ НА СВОЙ КОНФИГ ИЗ FIREBASE CONSOLE
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyAk7KIpPcBUCphtRFza_YumrN2oEN5eoik",
   authDomain: "oleg-131d1.firebaseapp.com",
@@ -16,10 +9,6 @@ const firebaseConfig = {
   storageBucket: "oleg-131d1.firebasestorage.app",
   messagingSenderId: "513374206627",
   appId: "1:513374206627:web:6dba31687022a8a21f5d16"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
 };
 
 const app = initializeApp(firebaseConfig);
@@ -31,6 +20,7 @@ let currentUserData = null;
 let activeChatId = null;
 let chatsUnsubscribe = null;
 let messagesUnsubscribe = null;
+let allChats = [];
 
 // DOM
 const authScreen = document.getElementById('authScreen');
@@ -55,7 +45,7 @@ const saveSettingsBtn = document.getElementById('saveSettingsBtn');
 const closeSettingsBtn = document.getElementById('closeSettingsBtn');
 const logoutBtn = document.getElementById('logoutBtn');
 
-// auth
+// auth UI
 const authTabs = document.querySelectorAll('.auth-tab');
 const loginForm = document.getElementById('loginForm');
 const registerForm = document.getElementById('registerForm');
@@ -141,6 +131,7 @@ onAuthStateChanged(auth, async (user) => {
         if (chatsUnsubscribe) chatsUnsubscribe();
         if (messagesUnsubscribe) messagesUnsubscribe();
         activeChatId = null;
+        allChats = [];
     }
 });
 
@@ -154,14 +145,25 @@ async function loadChats() {
             const otherId = chat.participants.find(p => p !== currentUser.uid);
             const otherDoc = await getDoc(doc(db, 'users', otherId));
             chat.otherNick = otherDoc.exists() ? otherDoc.data().nick : otherId;
+            chat.otherId = otherId;
             chats.push(chat);
         }
+        allChats = chats;
         renderChatList(chats);
+        
+        // если активный чат есть, но его нет в новом списке - сбрасываем
         if (activeChatId && !chats.find(c => c.id === activeChatId)) {
             activeChatId = null;
             renderMessages([]);
             inputArea.style.display = 'none';
             currentChatNameSpan.innerText = 'выберите чат';
+        } else if (activeChatId) {
+            // обновляем название чата
+            const currentChat = chats.find(c => c.id === activeChatId);
+            if (currentChat) {
+                currentChatNameSpan.innerText = currentChat.otherNick;
+            }
+            loadMessages(activeChatId);
         }
     });
 }
@@ -181,25 +183,37 @@ function renderChatList(chats) {
             </div>
         `;
     }).join('');
+    
     document.querySelectorAll('.chat-item').forEach(el => {
-        el.addEventListener('click', () => setActiveChat(el.dataset.chatId));
+        el.addEventListener('click', (e) => {
+            const chatId = el.dataset.chatId;
+            if (chatId) {
+                setActiveChat(chatId);
+            }
+        });
     });
-    if (activeChatId && chats.find(c => c.id === activeChatId)) {
-        loadMessages(activeChatId);
-    }
 }
 
 async function setActiveChat(chatId) {
+    if (activeChatId === chatId) return;
     activeChatId = chatId;
-    renderChatList([]);
-    await loadMessages(chatId);
-    inputArea.style.display = 'flex';
-    const chatDoc = await getDoc(doc(db, 'chats', chatId));
-    if (chatDoc.exists()) {
-        const otherId = chatDoc.data().participants.find(p => p !== currentUser.uid);
-        const otherDoc = await getDoc(doc(db, 'users', otherId));
-        currentChatNameSpan.innerText = otherDoc.exists() ? otherDoc.data().nick : otherId;
+    
+    const chat = allChats.find(c => c.id === chatId);
+    if (chat) {
+        currentChatNameSpan.innerText = chat.otherNick;
+        inputArea.style.display = 'flex';
+    } else {
+        const chatDoc = await getDoc(doc(db, 'chats', chatId));
+        if (chatDoc.exists()) {
+            const otherId = chatDoc.data().participants.find(p => p !== currentUser.uid);
+            const otherDoc = await getDoc(doc(db, 'users', otherId));
+            currentChatNameSpan.innerText = otherDoc.exists() ? otherDoc.data().nick : otherId;
+            inputArea.style.display = 'flex';
+        }
     }
+    
+    renderChatList(allChats);
+    await loadMessages(chatId);
 }
 
 async function loadMessages(chatId) {
@@ -207,21 +221,26 @@ async function loadMessages(chatId) {
     const q = query(collection(db, 'messages'), where('chatId', '==', chatId), orderBy('timestamp', 'asc'));
     messagesUnsubscribe = onSnapshot(q, (snapshot) => {
         const messages = [];
-        snapshot.forEach(doc => messages.push({ id: doc.id, ...doc.data() }));
+        snapshot.forEach(doc => {
+            messages.push({ id: doc.id, ...doc.data() });
+        });
         renderMessages(messages);
     });
 }
 
 function renderMessages(messages) {
     if (!messagesArea) return;
-    if (!activeChatId) return;
+    if (!activeChatId) {
+        messagesArea.innerHTML = '<div class="empty-state">~ выберите чат</div>';
+        return;
+    }
     if (messages.length === 0) {
         messagesArea.innerHTML = '<div class="empty-state">~ сообщений нет, напишите что-нибудь</div>';
         return;
     }
     messagesArea.innerHTML = messages.map(msg => {
         const isMine = msg.senderId === currentUser.uid;
-        const senderName = isMine ? currentUserData.nick : msg.senderName || 'собеседник';
+        const senderName = isMine ? currentUserData.nick : (msg.senderName || 'собеседник');
         return `
             <div class="message ${isMine ? 'message-mine' : 'message-them'}">
                 <div class="message-sender">${escapeHtml(senderName)}</div>
@@ -236,15 +255,23 @@ function renderMessages(messages) {
 async function sendMessage() {
     const text = messageInput.value.trim();
     if (!text || !activeChatId) return;
-    await addDoc(collection(db, 'messages'), {
-        chatId: activeChatId,
-        senderId: currentUser.uid,
-        senderName: currentUserData.nick,
-        text: text,
-        timestamp: Date.now()
-    });
-    await updateDoc(doc(db, 'chats', activeChatId), { lastMessage: text, lastUpdated: Date.now() });
-    messageInput.value = '';
+    
+    try {
+        await addDoc(collection(db, 'messages'), {
+            chatId: activeChatId,
+            senderId: currentUser.uid,
+            senderName: currentUserData.nick,
+            text: text,
+            timestamp: Date.now()
+        });
+        await updateDoc(doc(db, 'chats', activeChatId), { 
+            lastMessage: text, 
+            lastUpdated: Date.now() 
+        });
+        messageInput.value = '';
+    } catch (err) {
+        console.error('ошибка отправки:', err);
+    }
 }
 
 sendBtn.addEventListener('click', sendMessage);
@@ -256,56 +283,75 @@ messageInput.addEventListener('keypress', (e) => {
 });
 
 // поиск
-searchBtn.addEventListener('click', () => searchModal.style.display = 'flex');
+searchBtn.addEventListener('click', () => {
+    searchModal.style.display = 'flex';
+    searchInput.value = '';
+    searchResults.innerHTML = '';
+});
 closeSearchBtn.addEventListener('click', () => searchModal.style.display = 'none');
+
 searchInput.addEventListener('input', async () => {
     const q = searchInput.value.trim().toLowerCase();
     if (q.length < 2) {
         searchResults.innerHTML = '';
         return;
     }
-    const usersRef = collection(db, 'users');
-    const snapshot = await getDocs(usersRef);
-    const users = [];
-    snapshot.forEach(doc => {
-        if (doc.id !== currentUser.uid && doc.data().nick.toLowerCase().includes(q)) {
-            users.push({ id: doc.id, nick: doc.data().nick });
-        }
-    });
-    searchResults.innerHTML = users.map(u => `
-        <div class="search-result-item">
-            <span>${escapeHtml(u.nick)}</span>
-            <button class="start-chat-btn" data-id="${u.id}" data-nick="${u.nick}">начать чат</button>
-        </div>
-    `).join('');
-    document.querySelectorAll('.start-chat-btn').forEach(btn => {
-        btn.addEventListener('click', async () => {
-            const otherId = btn.dataset.id;
-            const qChat = query(collection(db, 'chats'), where('participants', 'array-contains', currentUser.uid));
-            const snap = await getDocs(qChat);
-            let existing = null;
-            snap.forEach(doc => {
-                const parts = doc.data().participants;
-                if (parts.includes(otherId) && parts.includes(currentUser.uid)) existing = doc.id;
-            });
-            if (existing) {
-                setActiveChat(existing);
-            } else {
-                const newChat = await addDoc(collection(db, 'chats'), {
-                    participants: [currentUser.uid, otherId],
-                    createdAt: Date.now(),
-                    lastMessage: ''
-                });
-                setActiveChat(newChat.id);
+    try {
+        const usersRef = collection(db, 'users');
+        const snapshot = await getDocs(usersRef);
+        const users = [];
+        snapshot.forEach(doc => {
+            if (doc.id !== currentUser.uid && doc.data().nick.toLowerCase().includes(q)) {
+                users.push({ id: doc.id, nick: doc.data().nick });
             }
-            searchModal.style.display = 'none';
-            searchInput.value = '';
-            searchResults.innerHTML = '';
         });
-    });
+        if (users.length === 0) {
+            searchResults.innerHTML = '<div style="padding: 8px; color: #6c7086;">никого не найдено</div>';
+            return;
+        }
+        searchResults.innerHTML = users.map(u => `
+            <div class="search-result-item">
+                <span>${escapeHtml(u.nick)}</span>
+                <button class="start-chat-btn" data-id="${u.id}" data-nick="${u.nick}">начать чат</button>
+            </div>
+        `).join('');
+        
+        document.querySelectorAll('.start-chat-btn').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const otherId = btn.dataset.id;
+                const otherNick = btn.dataset.nick;
+                
+                // ищем существующий чат
+                let existingChatId = null;
+                for (const chat of allChats) {
+                    if (chat.participants && chat.participants.includes(otherId)) {
+                        existingChatId = chat.id;
+                        break;
+                    }
+                }
+                
+                if (existingChatId) {
+                    setActiveChat(existingChatId);
+                } else {
+                    // создаём новый чат
+                    const newChatRef = await addDoc(collection(db, 'chats'), {
+                        participants: [currentUser.uid, otherId],
+                        createdAt: Date.now(),
+                        lastMessage: ''
+                    });
+                    setActiveChat(newChatRef.id);
+                }
+                searchModal.style.display = 'none';
+                searchInput.value = '';
+                searchResults.innerHTML = '';
+            });
+        });
+    } catch (err) {
+        console.error('ошибка поиска:', err);
+    }
 });
 
-// настройки и CSS
+// настройки
 openSettingsBtn.addEventListener('click', () => settingsModal.style.display = 'flex');
 closeSettingsBtn.addEventListener('click', () => settingsModal.style.display = 'none');
 saveSettingsBtn.addEventListener('click', async () => {
@@ -336,6 +382,7 @@ function applyCustomCSS(css) {
     styleTag.innerHTML = css;
 }
 function escapeHtml(str) {
+    if (!str) return '';
     return str.replace(/[&<>]/g, function(m) {
         if (m === '&') return '&amp;';
         if (m === '<') return '&lt;';
