@@ -1,265 +1,335 @@
-// простой мессенджер в стиле Arch/KDE
-// данные хранятся в localStorage
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js';
+import { getFirestore, collection, query, where, getDocs, getDoc, setDoc, doc, updateDoc, onSnapshot, addDoc, orderBy } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js';
 
-let state = {
-    user: { name: "пользователь" },
-    chats: [],      // { id, name, messages: [{ text, fromMe, time }] }
-    activeChatId: null,
-    nextId: 1
+// ЗАМЕНИ НА СВОЙ КОНФИГ ИЗ FIREBASE CONSOLE
+const firebaseConfig = {
+    apiKey: "AIzaSyAk7KIpPcBUCphtRFza_YumrN2oEN5eoik",
+    authDomain: "oleg-131d1.firebaseapp.com",
+    projectId: "oleg-131d1",
+    storageBucket: "oleg-131d1.firebasestorage.app",
+    messagingSenderId: "513374206627",
+    appId: "1:513374206627:web:6dba31687022a8a21f5d16"
 };
 
-// DOM элементы
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+let currentUser = null;
+let currentUserData = null;
+let activeChatId = null;
+let chatsUnsubscribe = null;
+let messagesUnsubscribe = null;
+
+// DOM
+const authScreen = document.getElementById('authScreen');
+const appScreen = document.getElementById('appScreen');
+const myNameDisplay = document.getElementById('myNameDisplay');
 const chatListDiv = document.getElementById('chatList');
 const messagesArea = document.getElementById('messagesArea');
 const inputArea = document.getElementById('inputArea');
 const currentChatNameSpan = document.getElementById('currentChatName');
-const myNameDisplay = document.getElementById('myNameDisplay');
 const messageInput = document.getElementById('messageInput');
 const sendBtn = document.getElementById('sendBtn');
-const newChatBtn = document.getElementById('newChatBtn');
-const newChatModal = document.getElementById('newChatModal');
-const createNewChat = document.getElementById('createNewChat');
-const cancelNewChat = document.getElementById('cancelNewChat');
-const newChatNameInput = document.getElementById('newChatName');
+const searchBtn = document.getElementById('searchBtn');
+const searchModal = document.getElementById('searchModal');
+const searchInput = document.getElementById('searchInput');
+const searchResults = document.getElementById('searchResults');
+const closeSearchBtn = document.getElementById('closeSearchBtn');
 const settingsModal = document.getElementById('settingsModal');
 const openSettingsBtn = document.getElementById('openSettingsBtn');
-const closeSettings = document.getElementById('closeSettings');
 const userNameInput = document.getElementById('userNameInput');
-const resetDataBtn = document.getElementById('resetDataBtn');
+const customCssInput = document.getElementById('customCssInput');
+const saveSettingsBtn = document.getElementById('saveSettingsBtn');
+const closeSettingsBtn = document.getElementById('closeSettingsBtn');
+const logoutBtn = document.getElementById('logoutBtn');
 
-// загрузка/сохранение
-function loadData() {
-    const saved = localStorage.getItem('kdeterm_messenger');
-    if (saved) {
-        try {
-            const parsed = JSON.parse(saved);
-            state = parsed;
-            if (!state.nextId) state.nextId = 1;
-            if (!state.chats) state.chats = [];
-            if (!state.user) state.user = { name: "пользователь" };
-        } catch(e) { console.warn(e); }
-    } else {
-        // демо-чат для примера
-        state.chats = [
-            { id: state.nextId++, name: "archlinux", messages: [
-                { text: "привет, как настроил окружение?", fromMe: false, time: Date.now() - 3600000 }
-            ] },
-            { id: state.nextId++, name: "kde", messages: [
-                { text: "plasma 6 вышел", fromMe: true, time: Date.now() - 7200000 }
-            ] }
-        ];
-        state.activeChatId = state.chats[0].id;
-        state.user = { name: "пользователь" };
-    }
-    if (!state.user.name) state.user.name = "пользователь";
-    render();
-    saveData();
-}
+// auth
+const authTabs = document.querySelectorAll('.auth-tab');
+const loginForm = document.getElementById('loginForm');
+const registerForm = document.getElementById('registerForm');
+const loginBtn = document.getElementById('loginBtn');
+const registerBtn = document.getElementById('registerBtn');
+const loginEmail = document.getElementById('loginEmail');
+const loginPassword = document.getElementById('loginPassword');
+const loginError = document.getElementById('loginError');
+const regNick = document.getElementById('regNick');
+const regEmail = document.getElementById('regEmail');
+const regPassword = document.getElementById('regPassword');
+const regError = document.getElementById('regError');
 
-function saveData() {
-    localStorage.setItem('kdeterm_messenger', JSON.stringify(state));
-}
+authTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+        authTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        if (tab.dataset.tab === 'login') {
+            loginForm.style.display = 'flex';
+            registerForm.style.display = 'none';
+        } else {
+            loginForm.style.display = 'none';
+            registerForm.style.display = 'flex';
+        }
+    });
+});
 
-// рендер сайдбара
-function renderChatList() {
-    if (!chatListDiv) return;
-    if (state.chats.length === 0) {
-        chatListDiv.innerHTML = '<div style="padding: 12px; color: #6c7086;">нет диалогов</div>';
+registerBtn.addEventListener('click', async () => {
+    const nick = regNick.value.trim();
+    const email = regEmail.value.trim();
+    const password = regPassword.value;
+    if (!nick || !email || !password) {
+        regError.innerText = 'заполните все поля';
         return;
     }
-    chatListDiv.innerHTML = state.chats.map(chat => {
-        const lastMsg = chat.messages.length ? chat.messages[chat.messages.length-1].text : "нет сообщений";
-        const shortLast = lastMsg.length > 40 ? lastMsg.slice(0,40)+"..." : lastMsg;
-        const activeClass = (state.activeChatId === chat.id) ? 'active' : '';
+    try {
+        const userCred = await createUserWithEmailAndPassword(auth, email, password);
+        await setDoc(doc(db, 'users', userCred.user.uid), {
+            nick: nick,
+            email: email,
+            createdAt: Date.now()
+        });
+        regError.innerText = '';
+        alert('регистрация успешна! теперь войдите');
+    } catch (err) {
+        regError.innerText = err.message;
+    }
+});
+
+loginBtn.addEventListener('click', async () => {
+    const email = loginEmail.value.trim();
+    const password = loginPassword.value;
+    if (!email || !password) {
+        loginError.innerText = 'заполните поля';
+        return;
+    }
+    try {
+        await signInWithEmailAndPassword(auth, email, password);
+    } catch (err) {
+        loginError.innerText = err.message;
+    }
+});
+
+onAuthStateChanged(auth, async (user) => {
+    if (user) {
+        currentUser = user;
+        const userDoc = await getDoc(doc(db, 'users', user.uid));
+        if (!userDoc.exists()) {
+            await setDoc(doc(db, 'users', user.uid), { nick: user.email.split('@')[0], email: user.email, createdAt: Date.now() });
+            currentUserData = { nick: user.email.split('@')[0] };
+        } else {
+            currentUserData = userDoc.data();
+        }
+        myNameDisplay.innerText = currentUserData.nick;
+        userNameInput.value = currentUserData.nick;
+        authScreen.style.display = 'none';
+        appScreen.style.display = 'flex';
+        loadCustomCSS();
+        loadChats();
+    } else {
+        authScreen.style.display = 'flex';
+        appScreen.style.display = 'none';
+        if (chatsUnsubscribe) chatsUnsubscribe();
+        if (messagesUnsubscribe) messagesUnsubscribe();
+        activeChatId = null;
+    }
+});
+
+async function loadChats() {
+    if (chatsUnsubscribe) chatsUnsubscribe();
+    const q = query(collection(db, 'chats'), where('participants', 'array-contains', currentUser.uid));
+    chatsUnsubscribe = onSnapshot(q, async (snapshot) => {
+        const chats = [];
+        for (const docSnap of snapshot.docs) {
+            const chat = { id: docSnap.id, ...docSnap.data() };
+            const otherId = chat.participants.find(p => p !== currentUser.uid);
+            const otherDoc = await getDoc(doc(db, 'users', otherId));
+            chat.otherNick = otherDoc.exists() ? otherDoc.data().nick : otherId;
+            chats.push(chat);
+        }
+        renderChatList(chats);
+        if (activeChatId && !chats.find(c => c.id === activeChatId)) {
+            activeChatId = null;
+            renderMessages([]);
+            inputArea.style.display = 'none';
+            currentChatNameSpan.innerText = 'выберите чат';
+        }
+    });
+}
+
+function renderChatList(chats) {
+    if (!chatListDiv) return;
+    if (chats.length === 0) {
+        chatListDiv.innerHTML = '<div style="padding: 12px; color: #6c7086;">нет диалогов, найдите пользователя через поиск</div>';
+        return;
+    }
+    chatListDiv.innerHTML = chats.map(chat => {
+        const activeClass = (activeChatId === chat.id) ? 'active' : '';
         return `
             <div class="chat-item ${activeClass}" data-chat-id="${chat.id}">
-                <div class="chat-name">${escapeHtml(chat.name)}</div>
-                <div class="chat-last">${escapeHtml(shortLast)}</div>
+                <div class="chat-name">${escapeHtml(chat.otherNick)}</div>
+                <div class="chat-last">${escapeHtml(chat.lastMessage || 'нет сообщений')}</div>
             </div>
         `;
     }).join('');
     document.querySelectorAll('.chat-item').forEach(el => {
-        el.addEventListener('click', () => {
-            const id = parseInt(el.dataset.chatId);
-            if (id) setActiveChat(id);
-        });
+        el.addEventListener('click', () => setActiveChat(el.dataset.chatId));
+    });
+    if (activeChatId && chats.find(c => c.id === activeChatId)) {
+        loadMessages(activeChatId);
+    }
+}
+
+async function setActiveChat(chatId) {
+    activeChatId = chatId;
+    renderChatList([]);
+    await loadMessages(chatId);
+    inputArea.style.display = 'flex';
+    const chatDoc = await getDoc(doc(db, 'chats', chatId));
+    if (chatDoc.exists()) {
+        const otherId = chatDoc.data().participants.find(p => p !== currentUser.uid);
+        const otherDoc = await getDoc(doc(db, 'users', otherId));
+        currentChatNameSpan.innerText = otherDoc.exists() ? otherDoc.data().nick : otherId;
+    }
+}
+
+async function loadMessages(chatId) {
+    if (messagesUnsubscribe) messagesUnsubscribe();
+    const q = query(collection(db, 'messages'), where('chatId', '==', chatId), orderBy('timestamp', 'asc'));
+    messagesUnsubscribe = onSnapshot(q, (snapshot) => {
+        const messages = [];
+        snapshot.forEach(doc => messages.push({ id: doc.id, ...doc.data() }));
+        renderMessages(messages);
     });
 }
 
-function renderMessages() {
+function renderMessages(messages) {
     if (!messagesArea) return;
-    const activeChat = state.chats.find(c => c.id === state.activeChatId);
-    if (!activeChat) {
-        messagesArea.innerHTML = '<div class="empty-state">~ выберите чат</div>';
-        inputArea.style.display = 'none';
-        currentChatNameSpan.innerText = 'выберите чат';
-        return;
-    }
-    currentChatNameSpan.innerText = activeChat.name;
-    inputArea.style.display = 'flex';
-    if (activeChat.messages.length === 0) {
+    if (!activeChatId) return;
+    if (messages.length === 0) {
         messagesArea.innerHTML = '<div class="empty-state">~ сообщений нет, напишите что-нибудь</div>';
         return;
     }
-    messagesArea.innerHTML = activeChat.messages.map(msg => {
-        const isMine = msg.fromMe;
-        const timeStr = new Date(msg.time).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+    messagesArea.innerHTML = messages.map(msg => {
+        const isMine = msg.senderId === currentUser.uid;
+        const senderName = isMine ? currentUserData.nick : msg.senderName || 'собеседник';
         return `
             <div class="message ${isMine ? 'message-mine' : 'message-them'}">
-                <div class="message-sender">${isMine ? state.user.name : activeChat.name}</div>
+                <div class="message-sender">${escapeHtml(senderName)}</div>
                 <div class="message-bubble">${escapeHtml(msg.text)}</div>
-                <div class="message-time">${timeStr}</div>
+                <div class="message-time">${new Date(msg.timestamp).toLocaleTimeString()}</div>
             </div>
         `;
     }).join('');
     messagesArea.scrollTop = messagesArea.scrollHeight;
 }
 
-function setActiveChat(chatId) {
-    state.activeChatId = chatId;
-    renderChatList();
-    renderMessages();
-    saveData();
-}
-
-function sendMessage() {
+async function sendMessage() {
     const text = messageInput.value.trim();
-    if (!text) return;
-    const activeChat = state.chats.find(c => c.id === state.activeChatId);
-    if (!activeChat) return;
-    activeChat.messages.push({
+    if (!text || !activeChatId) return;
+    await addDoc(collection(db, 'messages'), {
+        chatId: activeChatId,
+        senderId: currentUser.uid,
+        senderName: currentUserData.nick,
         text: text,
-        fromMe: true,
-        time: Date.now()
+        timestamp: Date.now()
     });
+    await updateDoc(doc(db, 'chats', activeChatId), { lastMessage: text, lastUpdated: Date.now() });
     messageInput.value = '';
-    renderMessages();
-    renderChatList(); // обновить последнее сообщение
-    saveData();
-    // автоответ (для имитации собеседника) — чисто для вайба
-    setTimeout(() => {
-        const stillActive = state.activeChatId === activeChat.id;
-        if (stillActive) {
-            const replies = ["понял", "ок", "и тебе привет", "лады", "ясно", "хорошо"];
-            const randomReply = replies[Math.floor(Math.random() * replies.length)];
-            activeChat.messages.push({
-                text: randomReply,
-                fromMe: false,
-                time: Date.now()
-            });
-            renderMessages();
-            renderChatList();
-            saveData();
-        }
-    }, 1200);
 }
 
-function createNewChat() {
-    const name = newChatNameInput.value.trim();
-    if (!name) return;
-    const exists = state.chats.some(c => c.name.toLowerCase() === name.toLowerCase());
-    if (exists) {
-        alert("чат с таким именем уже есть");
+sendBtn.addEventListener('click', sendMessage);
+messageInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+    }
+});
+
+// поиск
+searchBtn.addEventListener('click', () => searchModal.style.display = 'flex');
+closeSearchBtn.addEventListener('click', () => searchModal.style.display = 'none');
+searchInput.addEventListener('input', async () => {
+    const q = searchInput.value.trim().toLowerCase();
+    if (q.length < 2) {
+        searchResults.innerHTML = '';
         return;
     }
-    const newId = state.nextId++;
-    state.chats.push({
-        id: newId,
-        name: name,
-        messages: []
+    const usersRef = collection(db, 'users');
+    const snapshot = await getDocs(usersRef);
+    const users = [];
+    snapshot.forEach(doc => {
+        if (doc.id !== currentUser.uid && doc.data().nick.toLowerCase().includes(q)) {
+            users.push({ id: doc.id, nick: doc.data().nick });
+        }
     });
-    state.activeChatId = newId;
-    newChatNameInput.value = '';
-    newChatModal.style.display = 'none';
-    renderChatList();
-    renderMessages();
-    saveData();
-}
+    searchResults.innerHTML = users.map(u => `
+        <div class="search-result-item">
+            <span>${escapeHtml(u.nick)}</span>
+            <button class="start-chat-btn" data-id="${u.id}" data-nick="${u.nick}">начать чат</button>
+        </div>
+    `).join('');
+    document.querySelectorAll('.start-chat-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+            const otherId = btn.dataset.id;
+            const qChat = query(collection(db, 'chats'), where('participants', 'array-contains', currentUser.uid));
+            const snap = await getDocs(qChat);
+            let existing = null;
+            snap.forEach(doc => {
+                const parts = doc.data().participants;
+                if (parts.includes(otherId) && parts.includes(currentUser.uid)) existing = doc.id;
+            });
+            if (existing) {
+                setActiveChat(existing);
+            } else {
+                const newChat = await addDoc(collection(db, 'chats'), {
+                    participants: [currentUser.uid, otherId],
+                    createdAt: Date.now(),
+                    lastMessage: ''
+                });
+                setActiveChat(newChat.id);
+            }
+            searchModal.style.display = 'none';
+            searchInput.value = '';
+            searchResults.innerHTML = '';
+        });
+    });
+});
 
-function openNewChatModal() {
-    newChatModal.style.display = 'flex';
-    newChatNameInput.focus();
-}
-
-function closeNewChatModal() {
-    newChatModal.style.display = 'none';
-    newChatNameInput.value = '';
-}
-
-function openSettings() {
-    userNameInput.value = state.user.name;
-    settingsModal.style.display = 'flex';
-}
-
-function closeSettingsModal() {
+// настройки и CSS
+openSettingsBtn.addEventListener('click', () => settingsModal.style.display = 'flex');
+closeSettingsBtn.addEventListener('click', () => settingsModal.style.display = 'none');
+saveSettingsBtn.addEventListener('click', async () => {
+    const newNick = userNameInput.value.trim();
+    if (newNick && newNick !== currentUserData.nick) {
+        await updateDoc(doc(db, 'users', currentUser.uid), { nick: newNick });
+        currentUserData.nick = newNick;
+        myNameDisplay.innerText = newNick;
+    }
+    const customCSS = customCssInput.value;
+    localStorage.setItem('kdeterm_custom_css', customCSS);
+    applyCustomCSS(customCSS);
     settingsModal.style.display = 'none';
-    const newName = userNameInput.value.trim();
-    if (newName && newName !== state.user.name) {
-        state.user.name = newName;
-        myNameDisplay.innerText = state.user.name;
-        renderMessages(); // обновить имена в сообщениях
-        saveData();
+});
+logoutBtn.addEventListener('click', async () => {
+    await signOut(auth);
+});
+
+function loadCustomCSS() {
+    const saved = localStorage.getItem('kdeterm_custom_css');
+    if (saved) {
+        customCssInput.value = saved;
+        applyCustomCSS(saved);
     }
 }
-
-function resetAllData() {
-    if (confirm("сбросить все диалоги и настройки? данные нельзя будет восстановить")) {
-        localStorage.removeItem('kdeterm_messenger');
-        state = {
-            user: { name: "пользователь" },
-            chats: [],
-            activeChatId: null,
-            nextId: 1
-        };
-        // демо-чат для затравки
-        state.chats.push({ id: state.nextId++, name: "archlinux", messages: [] });
-        state.activeChatId = state.chats[0].id;
-        state.user = { name: "пользователь" };
-        saveData();
-        renderChatList();
-        renderMessages();
-        myNameDisplay.innerText = state.user.name;
-    }
+function applyCustomCSS(css) {
+    const styleTag = document.getElementById('userCustomCSS');
+    styleTag.innerHTML = css;
 }
-
 function escapeHtml(str) {
     return str.replace(/[&<>]/g, function(m) {
         if (m === '&') return '&amp;';
         if (m === '<') return '&lt;';
         if (m === '>') return '&gt;';
         return m;
-    }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
-        return c;
     });
 }
-
-// инициализация событий
-function initEvents() {
-    sendBtn.addEventListener('click', sendMessage);
-    messageInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            sendMessage();
-        }
-    });
-    newChatBtn.addEventListener('click', openNewChatModal);
-    cancelNewChat.addEventListener('click', closeNewChatModal);
-    createNewChat.addEventListener('click', createNewChat);
-    openSettingsBtn.addEventListener('click', openSettings);
-    closeSettings.addEventListener('click', closeSettingsModal);
-    resetDataBtn.addEventListener('click', resetAllData);
-    // закрыть модалки по клику вне
-    window.addEventListener('click', (e) => {
-        if (e.target === newChatModal) closeNewChatModal();
-        if (e.target === settingsModal) closeSettingsModal();
-    });
-}
-
-// старт
-function init() {
-    loadData();
-    initEvents();
-    myNameDisplay.innerText = state.user.name;
-}
-
-init();
