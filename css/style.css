@@ -13,7 +13,7 @@ html, body {
 body {
     margin: 0;
     padding: 0;
-    background: url("../assets/images/Background1.png") no-repeat center center fixed;
+    background: url("assets/images/background1.png") no-repeat center center fixed;
     background-size: cover;
     background-color: black;
     color: #eaeaea;
@@ -43,11 +43,9 @@ h1, h2, h3, h4, h5, h6 {
     margin: 0 0 20px;
     font-weight: normal;
     font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
-    color: #b5e853;
+    color: #e33636;
     letter-spacing: -0.03em;
-    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1),
-                0 0 5px rgba(181, 232, 83, 0.1),
-                0 0 10px rgba(181, 232, 83, 0.1);
+    text-shadow: 0 0 8px rgba(227, 54, 54, 0.4);
 }
 
 li {
@@ -55,7 +53,7 @@ li {
 }
 
 ul li {
-    list-style-image: url('../assets/images/ulli.png');
+    list-style-image: url('assets/images/ulli.png');
 }
 
 blockquote {
@@ -71,7 +69,7 @@ table {
 
 th {
     text-align: left;
-    border-bottom: 1px dashed #b5e853;
+    border-bottom: 1px dashed #e33636;
     padding: 5px 10px;
 }
 
@@ -82,8 +80,8 @@ td {
 hr {
     height: 0;
     border: 0;
-    border-bottom: 1px dashed #b5e853;
-    color: #b5e853;
+    border-bottom: 1px dashed #e33636;
+    color: #e33636;
 }
 
 a {
@@ -98,36 +96,36 @@ a {
     padding: 10px 24px;
     margin: 8px 0;
     color: #e3ffe3;
-    border-radius: 18px;
+    border-radius: 48px;
     text-decoration: none;
     font-size: 18px;
     box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
-    border: 2px dashed;
+    border: 1px solid rgba(227, 54, 54, 0.7);
     transition: box-shadow 0.3s, background-color 0.3s;
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-color: rgba(255, 255, 255, 0.3);
+    background: rgba(25, 25, 30, 0.8);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    font-weight: 600;
 }
 
 .button-link {
-    background: rgba(106, 176, 76, 0.25);
-    border-color: rgba(74, 124, 42, 0.4);
-    color: #e3ffe3;
+    background: rgba(198, 40, 40, 0.25);
+    border-color: rgba(227, 54, 54, 0.6);
 }
 .button-link:hover {
-    box-shadow: 0 0 12px 4px rgba(140, 216, 94, 0.5);
-    background: rgba(140, 216, 94, 0.35);
+    box-shadow: 0 0 14px 4px rgba(227, 54, 54, 0.6);
+    background: #c62828;
+    transform: translateY(-3px);
 }
 
 .button2-link {
-    background: rgba(117, 82, 154, 0.25);
-    border-color: rgba(80, 53, 106, 0.4);
-    color: #e3ffe3;
+    background: rgba(40, 30, 35, 0.85);
+    border-color: #b91c1c;
 }
 .button2-link:hover {
-    box-shadow: 0 0 12px 4px rgba(170, 126, 212, 0.5);
-    background: rgba(170, 126, 212, 0.35);
+    box-shadow: 0 0 14px 4px rgba(185, 28, 28, 0.5);
+    background: #9a2a2a;
+    transform: translateY(-3px);
 }
 
 details {
@@ -149,11 +147,11 @@ details > summary {
 }
 
 details > summary:hover {
-    color: #aadd55;
+    color: #ff7b7b;
 }
 
 details[open] > summary {
-    color: #b5e853;
+    color: #e33636;
 }
 
 details > summary::-webkit-details-marker {
@@ -177,13 +175,13 @@ details[open] > summary::before {
 
 .details-summary-primary {
     padding-left: 10px;
-    color: #75D2F2;
+    color: #ff6b6b;
     font-size: 25px;
 }
 
 .details-summary-secondary {
     padding-left: 30px;
-    color: #AA97FF;
+    color: #ff9999;
     font-size: 20px;
 }
 
@@ -203,7 +201,7 @@ details[open] > summary::before {
     font-weight: normal;
     margin-top: 5px;
     margin-bottom: 15px;
-    color: #b5e853;
+    color: #e33636;
 }
 
 .buttons-container {
@@ -294,7 +292,7 @@ details[open] > summary::before {
     bottom: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.65);
     z-index: 1;
     pointer-events: none;
 }
@@ -311,7 +309,7 @@ details[open] > summary::before {
     width: 800px;
     margin: 20px auto;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(181, 232, 83, 0.2);
+    border: 1px solid rgba(227, 54, 54, 0.3);
 }
 
 @media (max-width: 768px) {
@@ -350,7 +348,7 @@ details[open] > summary::before {
     max-width: 600px;
     margin: 20px auto;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(181, 232, 83, 0.2);
+    border: 1px solid rgba(227, 54, 54, 0.3);
     box-sizing: border-box;
     text-align: center;
 }
@@ -510,4 +508,8 @@ body.platform-tgstar .price-boosty {
         width: 14px;
         height: 14px;
     }
+}
+
+strong {
+    color: #ff7b7b;
 }
