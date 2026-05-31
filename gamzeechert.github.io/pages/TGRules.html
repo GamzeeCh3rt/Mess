@@ -2,88 +2,184 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📜 Telegram Rules - Раздел с правилами</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>📜 Telegram Rules — Epic Games Style</title>
     <link rel="icon" type="image/x-icon" href="../assets/images/WSIcons/favicon.ico">
+    <!-- Основной CSS (твой style.css) -->
     <link rel="stylesheet" type="text/css" href="../css/style.css">
-<script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=4hT-LEjqvAf39B6O6sPhPnqbAN7pzbEvEREqN-_uEhOFZ9bbyLF43yXSGlKCq2nLpn45JTJM-0pVLLCRUB8SN_ajl7D0Z9pesT9Mb3O-OeE" charset="UTF-8"></script></head>
+    <!-- Дополнительный CSS для гарантии стиля Epic Games + красная тема, размытие -->
+    <style>
+        /* Глобальные правки поверх твоего CSS – красная ассоциация, серые тона, Epic Games вайб */
+        body {
+            background: url("../assets/images/Background1.png") no-repeat center center fixed !important;
+            background-size: cover !important;
+            background-color: #0a0a0c !important;
+            position: relative;
+        }
+        /* затемнение для читаемости, но с сохранением фона */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.65);
+            z-index: 0;
+            pointer-events: none;
+        }
+        /* контент поверх затемнения */
+        .background-content, .center-content, .buttons-container, .background-page, .main-wrapper {
+            position: relative;
+            z-index: 2;
+        }
+        /* заголовки – красный акцент вместо зелёного */
+        h1, h2, h3, h4, h5, h6 {
+            color: #e33636 !important;
+            text-shadow: 0 0 8px rgba(227, 54, 54, 0.4) !important;
+            border-left-color: #e33636 !important;
+        }
+        h1 {
+            background: linear-gradient(135deg, #ff4d4d, #a51c1c);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent !important;
+            text-shadow: none !important;
+        }
+        hr {
+            border-bottom: 1px dashed #e33636 !important;
+        }
+        a, .button-link, .button2-link {
+            transition: all 0.25s ease;
+        }
+        .button-link, .button2-link {
+            backdrop-filter: blur(14px);
+            background: rgba(25, 25, 30, 0.8);
+            border: 1px solid rgba(227, 54, 54, 0.7);
+            border-radius: 48px;
+            color: #f0f0f0;
+            font-weight: 600;
+        }
+        .button-link:hover, .button2-link:hover {
+            background: #c62828;
+            border-color: #ff7b7b;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 22px rgba(198, 40, 40, 0.4);
+        }
+        strong {
+            color: #ff6b6b;
+        }
+        blockquote {
+            border-left: 4px solid #e33636;
+            background: rgba(20, 20, 26, 0.7);
+            backdrop-filter: blur(8px);
+            border-radius: 20px;
+        }
+        /* списки, чтобы фон не вылазил */
+        .center-content, .buttons-container {
+            z-index: 3;
+        }
+        /* кнопка для модераторов чуть другой оттенок, но в красной гамме */
+        .button2-link {
+            background: rgba(40, 30, 35, 0.85);
+            border-color: #b91c1c;
+        }
+        .button2-link:hover {
+            background: #9a2a2a;
+        }
+        /* делаем адаптивную обёртку, чтобы фон точно отображался на GitHub */
+        html, body {
+            min-height: 100vh;
+        }
+        /* фикс для мобильных – фон не дублируется */
+        @media (max-width: 768px) {
+            body::before {
+                background: rgba(0, 0, 0, 0.75);
+            }
+        }
+    </style>
+</head>
 <body>
-        <div class="center-content">
-            <h1>📃 Правила для чатов Telegram</h1>
-        </div>
+<!-- Чтобы фон работал и стили не ломались, оборачивать в дополнительный div не нужно – твой CSS и так норм, но добавим чуть воздуха -->
+<div class="center-content">
+    <h1>📃 Правила для чатов Telegram</h1>
+</div>
 
-    <div class="buttons-container">
-        <a href="../index.html" class="button-link">🌐 Главная страница</a>
-        <a href="./links.html" class="button-link">🔗 Раздел ссылок</a>
-    </div>
+<div class="buttons-container">
+    <a href="../index.html" class="button-link">🌐 Главная страница</a>
+    <a href="./links.html" class="button-link">🔗 Раздел ссылок</a>
+</div>
 
 <hr>
 
 <h2> ⏳ • Временные правила: </h2>
 <p>Запрещены <strong>политические дискуссии, агитация и провокационные темы</strong>, не относящиеся к проекту;</p>
-
-<!-- За использование <strong>нецензурной лексики</strong> в чатах, а также <strong>попытку обхода фильтра запрещенных слов</strong> будет выдаваться <strong>предупреждение</strong>. -->
-
 <p>За <strong>чрезмерное использование нецензурной лексики</strong> будет выдаваться <strong>предупреждение</strong>.</p>
 
 <h2> 🚫 • Запрещено: </h2>
 <ol>
-<li>Спам;</li>
-<li>ASCII графика;</li>
-<li>Флуд;</li>
-<li>Отправка <strong>материалов</strong> с тегом 18+ (Шок-контент);</li>
-<li>Отправка <strong>стикеров</strong> с тегом 18+;</li>
-<li>Отправка сообщений/материалов <strong>от имени канала</strong> (Разрешено только от личного аккаунта);</li>
-<li>Содержание <strong>в профиле аккаунта</strong> неподобающего контента;</li>
-<li>Прямые или косвенные <strong>оскорбления</strong> других участников;</li>
-<li><strong>Дискриминация</strong> по национальному, религиозному или иному признаку;</li>
-<li>Угрозы;</li>
-<li>Действия, направленные на <strong>провокацию конфликтов, травлю или преследование участников</strong>;</li>
-<li><strong>Пропаганда</strong> насилия, оружия, наркотических средств, алкоголя, табачных изделий;</li>
-<li>Распространение сообщений/материалов, разглашающие <strong>любую информацию</strong> участника/модератора/администратора <strong>без его согласия</strong>;</li>
-<li><strong>Размещение рекламы</strong> сторонних проектов/ресурсов/файлов <strong>без разрешения администрации</strong>;</li>
-<li><strong>Распространение программ</strong> с уязвимостями/вирусами;</li>
-<li><strong>Продажа</strong> игровых аккаунтов/карт;</li>
-<li>Распространение <strong>ложной информации</strong>;</li>
-<li>Попрошайничество;</li>
-<li>Выдавать себя за <strong>модерацию/администрацию</strong> проектов;</li>
-<li><strong>Критика</strong> действий модерации/администрации;</li>
-<li><strong>Неадекватная критика</strong>. Даже если вам не нравится какой-то контент в игре, <strong>не стоит оскорблять чужой труд</strong>;</li>
-<li><strong>Использование дополнительных аккаунтов</strong> для обхода ограничений/блокировки;</li>
-<li>Использование команд /report и @admin <strong>без весомой причины</strong>.</li>
+    <li>Спам;</li>
+    <li>ASCII графика;</li>
+    <li>Флуд;</li>
+    <li>Отправка <strong>материалов</strong> с тегом 18+ (Шок-контент);</li>
+    <li>Отправка <strong>стикеров</strong> с тегом 18+;</li>
+    <li>Отправка сообщений/материалов <strong>от имени канала</strong> (Разрешено только от личного аккаунта);</li>
+    <li>Содержание <strong>в профиле аккаунта</strong> неподобающего контента;</li>
+    <li>Прямые или косвенные <strong>оскорбления</strong> других участников;</li>
+    <li><strong>Дискриминация</strong> по национальному, религиозному или иному признаку;</li>
+    <li>Угрозы;</li>
+    <li>Действия, направленные на <strong>провокацию конфликтов, травлю или преследование участников</strong>;</li>
+    <li><strong>Пропаганда</strong> насилия, оружия, наркотических средств, алкоголя, табачных изделий;</li>
+    <li>Распространение сообщений/материалов, разглашающие <strong>любую информацию</strong> участника/модератора/администратора <strong>без его согласия</strong>;</li>
+    <li><strong>Размещение рекламы</strong> сторонних проектов/ресурсов/файлов <strong>без разрешения администрации</strong>;</li>
+    <li><strong>Распространение программ</strong> с уязвимостями/вирусами;</li>
+    <li><strong>Продажа</strong> игровых аккаунтов/карт;</li>
+    <li>Распространение <strong>ложной информации</strong>;</li>
+    <li>Попрошайничество;</li>
+    <li>Выдавать себя за <strong>модерацию/администрацию</strong> проектов;</li>
+    <li><strong>Критика</strong> действий модерации/администрации;</li>
+    <li><strong>Неадекватная критика</strong>. Даже если вам не нравится какой-то контент в игре, <strong>не стоит оскорблять чужой труд</strong>;</li>
+    <li><strong>Использование дополнительных аккаунтов</strong> для обхода ограничений/блокировки;</li>
+    <li>Использование команд /report и @admin <strong>без весомой причины</strong>.</li>
 </ol>
 
 <h2> ⚠️ • Не рекомендуется: </h2>
 <ol>
-<li>Злоупотребление Caps Lock;</li>
-<li>Злоупотребление смайлами;</li>
-<li>Злоупотребление реакциями под сообщениями;</li>
-<li><strong>Игнорирование предупреждений</strong> от модерации/администрации.</li>
+    <li>Злоупотребление Caps Lock;</li>
+    <li>Злоупотребление смайлами;</li>
+    <li>Злоупотребление реакциями под сообщениями;</li>
+    <li><strong>Игнорирование предупреждений</strong> от модерации/администрации.</li>
 </ol>
 
 <h2> ℹ️ • Прочая информация: </h2>
 <ul>
-<li>Незнание правил <strong>не освобождает</strong> от ответственности.</li>
-<li>Администрация и модерация оставляет за собой право удалять сообщения без объяснения причин.</li>
-<li><strong>С 00:00 до 09:00</strong> (МСК) действует ограничение на отправку медиа во всех чатах.</li>
-<li>Если Вас не устраивает поведение какого-либо участника, Вы можете написать <strong>жалобу</strong> о нем, использовав команду /report или @admin. </li>
+    <li>Незнание правил <strong>не освобождает</strong> от ответственности.</li>
+    <li>Администрация и модерация оставляет за собой право удалять сообщения без объяснения причин.</li>
+    <li><strong>С 00:00 до 09:00</strong> (МСК) действует ограничение на отправку медиа во всех чатах.</li>
+    <li>Если Вас не устраивает поведение какого-либо участника, Вы можете написать <strong>жалобу</strong> о нем, использовав команду /report или @admin.</li>
 </ul>
-<blockquote>Чтобы отправить жалобу, необходимы эти условия: 
-<ul>
-<li>Команда доступна только в ответ на сообщение с нарушением; </li>
-<li>Сообщение должно содержать указание причины нарушения.</li>
-</ul></blockquote>
+
+<blockquote>
+    Чтобы отправить жалобу, необходимы эти условия:
+    <ul>
+        <li>Команда доступна только в ответ на сообщение с нарушением;</li>
+        <li>Сообщение должно содержать указание причины нарушения.</li>
+    </ul>
+</blockquote>
 
 <hr>
 
-    <div class="center-content">
-<a href="./TGmodRules.html" class="button2-link">📝 Раздел для модераторов и стажеров</a>
+<div class="center-content">
+    <a href="./TGmodRules.html" class="button2-link">📝 Раздел для модераторов и стажеров</a>
 </div>
 
 <hr>
 
-    <div class="center-content">
-<p>Правила обновлены 05.02.2026</p>
+<div class="center-content">
+    <p>Правила обновлены 05.02.2026</p>
 </div>
+
+<!-- твой скрипт касперского (или другой) — оставляю как есть -->
+<script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=4hT-LEjqvAf39B6O6sPhPnqbAN7pzbEvEREqN-_uEhOFZ9bbyLF43yXSGlKCq2nLpn45JTJM-0pVLLCRUB8SN_ajl7D0Z9pesT9Mb3O-OeE" charset="UTF-8"></script>
 </body>
 </html>
