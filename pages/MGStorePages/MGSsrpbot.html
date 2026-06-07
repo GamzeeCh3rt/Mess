@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🛍️ Madness Games Store - Simple RolePlay Bot</title>
+    <link rel="icon" type="image/x-icon" href="../../assets/images/WSIcons/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="../../css/style.css">
+</head>
+<body class="background-page" style="
+    background: url('../../assets/images/MGSIcons/MGSpic.svg') no-repeat center center fixed;
+    background-size: cover;
+">
+
+    <div class="background-content">
+        <h1>Simple RolePlay Bot</h1>
+
+        <p><img src="../../assets/images/MGSIcons/MGSsrpbotlogo.svg" alt="MGSsrpbotlogo" style="max-width:150px;"></p>
+
+        <a href="../../index.html" class="button-link">🌐 Главная страница</a>
+        <a href="./MGSMain.html" class="button-link">🔙 Вернуться в магазин</a>
+
+        <hr>
+
+        <div class="platform-switcher">
+            <div class="platform-btn active" data-platform="youmoney">
+                <img src="../../assets/images/MGSIcons/YouMoney.svg" alt="YouMoney"> ЮMoney
+            </div>
+            <div class="platform-btn" data-platform="boosty">
+                <img src="../../assets/images/MGSIcons/Boosty.svg" alt="Boosty"> Boosty
+            </div>
+            <div class="platform-btn" data-platform="tgstar">
+                <img src="../../assets/images/MGSIcons/TgStar.svg" alt="TG Stars"> Telegram Stars
+            </div>
+        </div>
+
+        <h2>Доступные товары</h2>
+
+        <details>
+            <summary style="padding-left: 10px; color: #75D2F2; font-size: 25px;">Валюта</summary>
+            <ul>
+                <li><strong>1000 ₲</strong> - ВРЕМЕННО НЕДОСТУПНО</li>
+                <li><strong>3000 ₲</strong> - ВРЕМЕННО НЕДОСТУПНО</li>
+                <li><strong>5000 ₲</strong> - ВРЕМЕННО НЕДОСТУПНО</li>
+                <li><strong>10000 ₲</strong> - ВРЕМЕННО НЕДОСТУПНО</li>
+                <li><strong>50000 ₲</strong> - ВРЕМЕННО НЕДОСТУПНО</li>
+            </ul>
+        </details>
+
+        <details>
+            <summary style="padding-left: 10px; color: #75D2F2; font-size: 25px;">Прочее</summary>
+            <ul>
+                <li><strong>VIP-статус</strong> - ВРЕМЕННО НЕДОСТУПНО</li>
+                <li><strong>Любой тег в профиле игрока</strong> - ВРЕМЕННО НЕДОСТУПНО</li>
+            </ul>
+        </details>
+
+        <p><a href="https://vk.com/simpleroleplay_bot" class="button-link" rel="noopener noreferrer">🤖 Написать боту</a></p>
+        <p><a href="https://vk.com/tim_v20" class="button2-link" rel="noopener noreferrer">🛍️ Купить у продавца (ВКонтакте)</a></p>
+        <p><a href="https://t.me/m/SvEAzEGNYWUy" class="button2-link" rel="noopener noreferrer">🛍️ Купить у продавца (Telegram)</a></p>
+
+        <hr>
+
+        <p>Список товаров обновлен 03.05.2026</p>
+    </div>
+
+    <script>
+    (function() {
+        function applyPlatform(platform) {
+            document.body.classList.remove('platform-youmoney', 'platform-boosty', 'platform-tgstar');
+            document.body.classList.add('platform-' + platform);
+            
+            document.querySelectorAll('.platform-btn').forEach(btn => {
+                if (btn.dataset.platform === platform) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+        
+        document.querySelectorAll('.platform-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                applyPlatform(this.dataset.platform);
+            });
+        });
+        
+        applyPlatform('youmoney');
+    })();
+    </script>
+
+</body>
+</html>

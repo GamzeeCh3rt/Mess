@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🛍️ Madness Games Store - Simple SandBox Classic</title>
+    <link rel="icon" type="image/x-icon" href="../../assets/images/WSIcons/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="../../css/style.css">
+</head>
+<body class="background-page" style="
+    background: url('../../assets/images/MGSIcons/MGSpic.svg') no-repeat center center fixed;
+    background-size: cover;
+">
+
+    <div class="background-content">
+
+<h1>Simple SandBox Classic</h1>
+
+<p><img src="../../assets/images/MGSIcons/MGSssbclogo.svg" alt="MGSssbclogo" style="max-width:150px;"></p>
+
+      <a href="../../index.html" class="button-link">🌐 Главная страница</a>
+      <a href="./MGSMain.html" class="button-link">🔙 Вернуться в магазин</a>
+
+<hr>
+
+<div class="platform-switcher">
+    <div class="platform-btn active" data-platform="youmoney">
+        <img src="../../assets/images/MGSIcons/YouMoney.svg" alt="YouMoney"> ЮMoney
+    </div>
+    <div class="platform-btn" data-platform="boosty">
+        <img src="../../assets/images/MGSIcons/Boosty.svg" alt="Boosty"> Boosty
+    </div>
+    <div class="platform-btn" data-platform="tgstar">
+        <img src="../../assets/images/MGSIcons/TgStar.svg" alt="TG Stars"> Telegram Stars
+    </div>
+</div>
+
+<h2>Доступные товары</h2>
+
+<details>
+  <summary style="padding-left: 10px; color: #75D2F2; font-size: 25px;">Валюта</summary>
+  <details>
+    <summary style="padding-left: 30px; color: #AA97FF; font-size: 20px;">Монеты</summary>
+    <ul>
+      <li><strong>90.000 SC</strong> - <!-- 55.00 ₽ -->
+        <span class="price-youmoney">57.00 ₽</span>
+        <span class="price-boosty">61.00 ₽</span>
+        <span class="price-tgstar">42 TGs</span>
+      </li>
+      <li><strong>200.000 SC</strong> - <!-- 109.00 ₽ -->
+        <span class="price-youmoney">112.00 ₽</span>
+        <span class="price-boosty">120.00 ₽</span>
+        <span class="price-tgstar">80 TGs</span>
+      </li>
+      <li><strong>320.000 SC</strong> - <!-- 159.00 ₽ -->
+        <span class="price-youmoney">164.00 ₽</span>
+        <span class="price-boosty">175.00 ₽</span>
+        <span class="price-tgstar">117 TGs</span>
+      </li>
+      <li><strong>500.000 SC</strong> - <!-- 219.00 ₽ -->
+        <span class="price-youmoney">226.00 ₽</span>
+        <span class="price-boosty">241.00 ₽</span>
+        <span class="price-tgstar">159 TGs</span>
+      </li>
+    </ul>
+  </details>
+  <details>
+    <summary style="padding-left: 30px; color: #AA97FF; font-size: 20px;">Кристаллы</summary>
+    <ul>
+      <li><strong>100 CR</strong> - <!-- 55.00 ₽ -->
+        <span class="price-youmoney">57.00 ₽</span>
+        <span class="price-boosty">61.00 ₽</span>
+        <span class="price-tgstar">42 TGs</span>
+      </li>
+      <li><strong>300 CR</strong> - <!-- 109.00 ₽ -->
+        <span class="price-youmoney">112.00 ₽</span>
+        <span class="price-boosty">120.00 ₽</span>
+        <span class="price-tgstar">80 TGs</span>
+      </li>
+      <li><strong>700 CR</strong> - <!-- 159.00 ₽ -->
+        <span class="price-youmoney">164.00 ₽</span>
+        <span class="price-boosty">175.00 ₽</span>
+        <span class="price-tgstar">117 TGs</span>
+      </li>
+      <li><strong>1200 CR</strong> - <!-- 219.00 ₽ -->
+        <span class="price-youmoney">226.00 ₽</span>
+        <span class="price-boosty">241.00 ₽</span>
+        <span class="price-tgstar">159 TGs</span>
+      </li>
+    </ul>
+  </details>
+</details>
+
+<details>
+  <summary style="padding-left: 10px; color: #75D2F2; font-size: 25px;">Паки</summary>
+  <ul>
+    <li><strong>Business Jet + VIP Limousine + AdBlock + 550.000 SC + 1500 CR</strong> - <!-- 449.00 ₽ -->
+      <span class="price-youmoney">462.00 ₽</span>
+      <span class="price-boosty">494.00 ₽</span>
+      <span class="price-tgstar">327 TGs</span>
+    </li>
+    <li><strong>Shop Interiors Items</strong> - <!-- 169.00 ₽ -->
+      <span class="price-youmoney">174.00 ₽</span>
+      <span class="price-boosty">186.00 ₽</span>
+      <span class="price-tgstar">124 TGs</span>
+    </li>
+  </ul>
+</details>
+
+<p><a href="https://t.me/m/SvEAzEGNYWUy" class="button2-link" rel="noopener noreferrer">🛍️ Купить у продавца</a></p>
+
+<hr>
+
+<p>Список товаров обновлен 03.05.2026</p>
+
+</div>
+
+<script>
+(function() {
+    function applyPlatform(platform) {
+        document.body.classList.remove('platform-youmoney', 'platform-boosty', 'platform-tgstar');
+        document.body.classList.add('platform-' + platform);
+        
+        document.querySelectorAll('.platform-btn').forEach(btn => {
+            if (btn.dataset.platform === platform) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+    }
+    
+    document.querySelectorAll('.platform-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            applyPlatform(this.dataset.platform);
+        });
+    });
+    
+    applyPlatform('youmoney');
+})();
+</script>
+
+</body>
+</html>

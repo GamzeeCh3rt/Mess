@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🛍️ Madness Games Store - SandBox Experimental</title>
+    <link rel="icon" type="image/x-icon" href="../../assets/images/WSIcons/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="../../css/style.css">
+</head>
+<body class="background-page" style="
+    background: url('../../assets/images/MGSIcons/MGSpic.svg') no-repeat center center fixed;
+    background-size: cover;
+">
+
+    <div class="background-content">
+        <h1>SandBox Experimental</h1>
+
+        <p><img src="../../assets/images/MGSIcons/MGSsbelogo.svg" alt="MGSsbelogo" style="max-width:150px;"></p>
+
+        <a href="../../index.html" class="button-link">🌐 Главная страница</a>
+        <a href="./MGSMain.html" class="button-link">🔙 Вернуться в магазин</a>
+
+        <hr>
+
+        <div class="platform-switcher">
+            <div class="platform-btn active" data-platform="youmoney">
+                <img src="../../assets/images/MGSIcons/YouMoney.svg" alt="YouMoney"> ЮMoney
+            </div>
+            <div class="platform-btn" data-platform="boosty">
+                <img src="../../assets/images/MGSIcons/Boosty.svg" alt="Boosty"> Boosty
+            </div>
+            <div class="platform-btn" data-platform="tgstar">
+                <img src="../../assets/images/MGSIcons/TgStar.svg" alt="TG Stars"> Telegram Stars
+            </div>
+        </div>
+
+        <h2>Доступные товары</h2>
+
+        <details>
+            <summary style="padding-left: 10px; color: #75D2F2; font-size: 25px;">Валюта</summary>
+            <details>
+                <summary style="padding-left: 30px; color: #AA97FF; font-size: 20px;">Монеты</summary>
+                <ul>
+                    <li><strong>90.000 SC</strong> - <!-- 65.00 ₽ -->
+                        <span class="price-youmoney">67.00 ₽</span>
+                        <span class="price-boosty">72.00 ₽</span>
+                        <span class="price-tgstar">49 TGs</span>
+                    </li>
+                    <li><strong>200.000 SC</strong> - <!-- 129.00 ₽ -->
+                        <span class="price-youmoney">133.00 ₽</span>
+                        <span class="price-boosty">143.00 ₽</span>
+                        <span class="price-tgstar">95 TGs</span>
+                    </li>
+                    <li><strong>320.000 SC</strong> - <!-- 189.00 ₽ -->
+                        <span class="price-youmoney">195.00 ₽</span>
+                        <span class="price-boosty">210.00 ₽</span>
+                        <span class="price-tgstar">138 TGs</span>
+                    </li>
+                    <li><strong>500.000 SC</strong> - <!-- 249.00 ₽ -->
+                        <span class="price-youmoney">256.00 ₽</span>
+                        <span class="price-boosty">277.00 ₽</span>
+                        <span class="price-tgstar">182 TGs</span>
+                    </li>
+                </ul>
+            </details>
+            <details>
+                <summary style="padding-left: 30px; color: #AA97FF; font-size: 20px;">Кристаллы</summary>
+                <ul>
+                    <li><strong>100 CR</strong> - <!-- 65.00 ₽ -->
+                        <span class="price-youmoney">67.00 ₽</span>
+                        <span class="price-boosty">72.00 ₽</span>
+                        <span class="price-tgstar">49 TGs</span>
+                    </li>
+                    <li><strong>300 CR</strong> - <!-- 129.00 ₽ -->
+                        <span class="price-youmoney">133.00 ₽</span>
+                        <span class="price-boosty">143.00 ₽</span>
+                        <span class="price-tgstar">95 TGs</span>
+                    </li>
+                    <li><strong>700 CR</strong> - <!-- 189.00 ₽ -->
+                        <span class="price-youmoney">195.00 ₽</span>
+                        <span class="price-boosty">210.00 ₽</span>
+                        <span class="price-tgstar">138 TGs</span>
+                    </li>
+                    <li><strong>1200 CR</strong> - <!-- 249.00 ₽ -->
+                        <span class="price-youmoney">256.00 ₽</span>
+                        <span class="price-boosty">277.00 ₽</span>
+                        <span class="price-tgstar">182 TGs</span>
+                    </li>
+                </ul>
+            </details>
+        </details>
+
+        <details>
+            <summary style="padding-left: 10px; color: #75D2F2; font-size: 25px;">Паки</summary>
+            <ul>
+                <li><strong>Jetpack + 2 cars + AdBlock + 600.000 SC + 1500 CR</strong> - <!-- 599.00 ₽ -->
+                    <span class="price-youmoney">617.00 ₽</span>
+                    <span class="price-boosty">666.00 ₽</span>
+                    <span class="price-tgstar">433 TGs</span>
+                </li>
+            </ul>
+        </details>
+
+        <p><a href="https://t.me/m/SvEAzEGNYWUy" class="button2-link" rel="noopener noreferrer">🛍️ Купить у продавца</a></p>
+
+        <hr>
+
+        <p>Список товаров обновлен 03.05.2026</p>
+    </div>
+
+    <script>
+    (function() {
+        let currentPlatform = 'youmoney';
+        
+        function applyPlatform(platform) {
+            document.body.classList.remove('platform-youmoney', 'platform-boosty', 'platform-tgstar');
+            document.body.classList.add('platform-' + platform);
+            
+            document.querySelectorAll('.platform-btn').forEach(btn => {
+                if (btn.dataset.platform === platform) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+        
+        document.querySelectorAll('.platform-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                applyPlatform(this.dataset.platform);
+            });
+        });
+        
+        applyPlatform('youmoney');
+    })();
+    </script>
+
+</body>
+</html>
