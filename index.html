@@ -3,190 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>iOS Style — правила и проекты</title>
+    <title>Dark Apple — правила и проекты</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            background: #f5f5f7;
-            font-family: -apple-system, 'SF Pro Text', 'Helvetica Neue', 'Segoe UI', system-ui, sans-serif;
-            padding: 2rem 1rem;
-            color: #1d1c1f;
-        }
-        .ios-container {
-            max-width: 1100px;
-            margin: 0 auto;
-            background: #ffffff;
-            border-radius: 20px;
-            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08), 0 0 0 0.5px rgba(0, 0, 0, 0.02);
-            overflow: hidden;
-        }
-        .ios-tabs {
-            background: #ffffff;
-            padding: 0.5rem 2rem;
-            display: flex;
-            gap: 2rem;
-            border-bottom: 0.5px solid #c6c6c8;
-        }
-        .tab-btn {
-            background: none;
-            border: none;
-            font-size: 1rem;
-            font-weight: 500;
-            font-family: inherit;
-            color: #8e8e93;
-            padding: 0.8rem 0;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .tab-btn.active {
-            color: #0a84ff;
-            border-bottom: 2px solid #0a84ff;
-            margin-bottom: -1px;
-        }
-        .page {
-            display: none;
-            padding: 2rem;
-        }
-        .page.active-page {
-            display: block;
-        }
-        .rules-group {
-            margin-bottom: 2rem;
-        }
-        .rules-group h3 {
-            font-weight: 600;
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
-            padding-left: 0.5rem;
-            color: #1c1c1e;
-        }
-        .rules-list {
-            list-style: none;
-            background: #f9f9fb;
-            border-radius: 14px;
-            overflow: hidden;
-            border: 0.5px solid #e9e9ef;
-        }
-        .rules-list li {
-            padding: 0.9rem 1rem;
-            border-bottom: 0.5px solid #e9e9ef;
-            color: #2c2c2e;
-            font-size: 0.95rem;
-            line-height: 1.4;
-        }
-        .rules-list li:last-child {
-            border-bottom: none;
-        }
-        .punishment-item {
-            padding: 0.9rem 1rem;
-            border-bottom: 0.5px solid #e9e9ef;
-        }
-        .punishment-name {
-            font-weight: 500;
-            color: #1c1c1e;
-            margin-bottom: 0.25rem;
-        }
-        .punishment-desc {
-            font-size: 0.85rem;
-            color: #0a84ff;
-        }
-        .moder-section {
-            margin-top: 2rem;
-            text-align: center;
-        }
-        .moder-toggle {
-            background: #0a84ff;
-            border: none;
-            padding: 0.7rem 1.5rem;
-            font-family: inherit;
-            font-size: 0.95rem;
-            font-weight: 500;
-            color: white;
-            cursor: pointer;
-            border-radius: 40px;
-            transition: 0.2s;
-        }
-        .moder-toggle:hover {
-            background: #0063ce;
-        }
-        .moder-panel {
-            margin-top: 1.5rem;
-            background: #f9f9fb;
-            border-radius: 18px;
-            padding: 0;
-            text-align: left;
-            border: 0.5px solid #e9e9ef;
-            overflow: hidden;
-        }
-        .projects-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-        .project-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 0.8rem 1rem;
-            cursor: pointer;
-            background: #ffffff;
-            border-radius: 14px;
-            transition: background 0.1s ease;
-            border: 0.5px solid #e9e9ef;
-        }
-        .project-item:hover {
-            background: #f2f2f5;
-        }
-        .project-avatar {
-            font-size: 32px;
-            width: 48px;
-            text-align: center;
-        }
-        .project-name {
-            font-size: 1.1rem;
-            font-weight: 500;
-            color: #1c1c1e;
-        }
-        .reload-hint {
-            font-size: 0.7rem;
-            text-align: right;
-            margin-bottom: 1rem;
-            color: #8e8e93;
-        }
-        footer {
-            border-top: 0.5px solid #e9e9ef;
-            margin-top: 0.5rem;
-            padding: 1rem;
-            text-align: center;
-            font-size: 0.7rem;
-            color: #8e8e93;
-        }
+        /* временные стили, чтобы всё работало до отдельного CSS */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #000; font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif; padding: 20px 16px; color: #fff; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .tabs { display: flex; gap: 24px; margin-bottom: 28px; border-bottom: 0.5px solid #2c2c2e; padding-bottom: 8px; }
+        .tab { background: none; border: none; font-size: 20px; font-weight: 500; color: #8e8e93; cursor: pointer; padding: 4px 0; }
+        .tab.active { color: #0a84ff; }
+        .page { display: none; }
+        .page.active { display: block; }
+        .rules-group { margin-bottom: 24px; }
+        .rules-group h3 { font-size: 18px; font-weight: 600; margin-bottom: 12px; padding-left: 8px; }
+        .rules-list { list-style: none; background: #1c1c1e; border-radius: 14px; overflow: hidden; }
+        .rules-list li { padding: 14px 16px; border-bottom: 0.5px solid #2c2c2e; color: #ebebf0; font-size: 15px; }
+        .rules-list li:last-child { border-bottom: none; }
+        .punishment-block { background: #1c1c1e; border-radius: 14px; overflow: hidden; }
+        .punishment-row { padding: 14px 16px; border-bottom: 0.5px solid #2c2c2e; }
+        .punishment-name { font-weight: 500; margin-bottom: 6px; }
+        .punishment-desc { font-size: 14px; color: #0a84ff; }
+        .moder-wrapper { margin-top: 32px; text-align: center; }
+        .moder-button { background: #0a84ff; border: none; padding: 12px 24px; font-size: 16px; font-weight: 500; color: white; border-radius: 40px; cursor: pointer; }
+        .moder-panel { margin-top: 20px; text-align: left; }
+        .hidden { display: none; }
+        .projects-list { display: flex; flex-direction: column; gap: 12px; }
+        .project-card { display: flex; align-items: center; gap: 16px; padding: 12px 16px; background: #1c1c1e; border-radius: 14px; cursor: pointer; }
+        .project-card:hover { background: #2c2c2e; }
+        .project-icon { font-size: 32px; width: 48px; text-align: center; }
+        .project-name { font-size: 17px; font-weight: 500; }
+        .info-row { font-size: 12px; color: #8e8e93; text-align: right; margin-bottom: 16px; }
+        .footer { margin-top: 40px; padding-top: 16px; border-top: 0.5px solid #2c2c2e; text-align: center; font-size: 11px; color: #6c6c70; }
     </style>
 </head>
 <body>
-<div class="ios-container">
-    <div class="ios-tabs">
-        <button class="tab-btn active" data-tab="projects">📁 ПРОЕКТЫ</button>
-        <button class="tab-btn" data-tab="rules">📜 ПРАВИЛА</button>
+<div class="container">
+    <div class="tabs">
+        <button class="tab active" data-tab="projects">Проекты</button>
+        <button class="tab" data-tab="rules">Правила</button>
     </div>
 
-    <div id="projectsPage" class="page active-page">
-        <div class="reload-hint">⚡ projects.json — редактируй, обнови страницу</div>
+    <div id="projectsPage" class="page active">
+        <div class="info-row">⚡ projects.json — редактируй, обнови страницу</div>
         <div id="projectsContainer" class="projects-list">загрузка...</div>
     </div>
 
     <div id="rulesPage" class="page">
         <div id="rulesContent"></div>
-        <div class="moder-section">
-            <button id="moderBtn" class="moder-toggle">🔐 раздел для модераторов и стажёров</button>
-            <div id="moderPanel" style="display: none; margin-top: 1.2rem;"></div>
+        <div class="moder-wrapper">
+            <button id="moderBtn" class="moder-button">🔐 раздел для модераторов и стажёров</button>
+            <div id="moderPanel" class="moder-panel hidden"></div>
         </div>
     </div>
-    <footer>ios style · правила и проекты</footer>
+    <div class="footer">Dark Apple · правила и проекты</div>
 </div>
 
 <script>
@@ -199,23 +68,23 @@
                 if (!response.ok) throw new Error('файл не найден');
                 const projects = await response.json();
                 if (!projects.length) {
-                    container.innerHTML = '<div class="project-item"><div class="project-avatar">📁</div><div class="project-name">нет проектов, добавь в projects.json</div></div>';
+                    container.innerHTML = '<div class="project-card"><div class="project-icon">📁</div><div class="project-name">нет проектов, добавь в projects.json</div></div>';
                     return;
                 }
                 container.innerHTML = projects.map(p => `
-                    <div class="project-item" data-link="${p.link || '#'}">
-                        <div class="project-avatar">${p.avatarEmoji ? p.avatarEmoji : (p.avatarUrl ? `<img src="${p.avatarUrl}" width="32" style="border-radius:16px;">` : '📄')}</div>
+                    <div class="project-card" data-link="${p.link || '#'}">
+                        <div class="project-icon">${p.avatarEmoji ? p.avatarEmoji : (p.avatarUrl ? `<img src="${p.avatarUrl}" width="32" style="border-radius:16px;">` : '📄')}</div>
                         <div class="project-name">${escapeHtml(p.name)}</div>
                     </div>
                 `).join('');
-                document.querySelectorAll('.project-item').forEach(el => {
+                document.querySelectorAll('.project-card').forEach(el => {
                     const link = el.getAttribute('data-link');
                     if (link && link !== '#') {
                         el.addEventListener('click', () => window.open(link, '_blank'));
                     }
                 });
             } catch(e) {
-                container.innerHTML = '<div class="project-item"><div class="project-avatar">⚠️</div><div class="project-name">projects.json не найден</div></div>';
+                container.innerHTML = '<div class="project-card"><div class="project-icon">⚠️</div><div class="project-name">projects.json не найден</div></div>';
             }
         }
 
@@ -268,35 +137,34 @@
             ];
             panel.innerHTML = `
                 <div class="rules-group"><h3>🛡️ Наказания для стажёров и модераторов</h3>
-                <div style="background: #f9f9fb; border-radius: 14px; overflow: hidden; border: 0.5px solid #e9e9ef;">
+                <div class="punishment-block">
                     ${punishments.map(p => `
-                        <div class="punishment-item">
+                        <div class="punishment-row">
                             <div class="punishment-name">${p.name}</div>
                             <div class="punishment-desc">→ ${p.desc}</div>
                         </div>
                     `).join('')}
                 </div>
-                <div style="margin-top: 0.8rem; font-size:0.8rem; color:#8e8e93; padding: 0 0.5rem;">⚙️ Администрация может ужесточить меры в зависимости от тяжести нарушения.</div>
+                <div style="margin-top: 12px; font-size: 12px; color: #8e8e93; padding: 0 4px;">⚙️ Администрация может ужесточить меры</div>
             `;
         }
 
         function initTabs() {
-            const tabs = document.querySelectorAll('.tab-btn');
+            const tabs = document.querySelectorAll('.tab');
             const projectsDiv = document.getElementById('projectsPage');
             const rulesDiv = document.getElementById('rulesPage');
-            if (!tabs.length) return;
             tabs.forEach(btn => {
                 btn.addEventListener('click', () => {
                     const tab = btn.dataset.tab;
                     tabs.forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
                     if (tab === 'projects') {
-                        projectsDiv.classList.add('active-page');
-                        rulesDiv.classList.remove('active-page');
+                        projectsDiv.classList.add('active');
+                        rulesDiv.classList.remove('active');
                         loadProjects();
                     } else {
-                        rulesDiv.classList.add('active-page');
-                        projectsDiv.classList.remove('active-page');
+                        rulesDiv.classList.add('active');
+                        projectsDiv.classList.remove('active');
                     }
                 });
             });
@@ -307,12 +175,12 @@
             const panel = document.getElementById('moderPanel');
             if (btn && panel) {
                 btn.addEventListener('click', () => {
-                    if (panel.style.display === 'none') {
-                        panel.style.display = 'block';
+                    if (panel.classList.contains('hidden')) {
+                        panel.classList.remove('hidden');
                         btn.textContent = '❌ скрыть раздел модераторов';
                         renderModerPanel();
                     } else {
-                        panel.style.display = 'none';
+                        panel.classList.add('hidden');
                         btn.textContent = '🔐 раздел для модераторов и стажёров';
                     }
                 });
