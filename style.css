@@ -5,44 +5,44 @@
 }
 
 body {
-    background: #1e1e24;
-    font-family: 'Noto Sans', 'Segoe UI', system-ui, -apple-system, 'Roboto', sans-serif;
+    background: #f5f5f7;
+    font-family: -apple-system, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', 'Segoe UI', system-ui, sans-serif;
     padding: 2rem 1rem;
-    color: #eff0f1;
+    color: #1d1c1f;
 }
 
 .breeze-box {
     max-width: 1100px;
     margin: 0 auto;
-    background: #2a2a32;
-    border-radius: 8px;
-    border: 1px solid #3f3f46;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08), 0 0 0 0.5px rgba(0, 0, 0, 0.02);
     overflow: hidden;
 }
 
 .breeze-tabs {
-    background: #1f1f26;
-    padding: 0.5rem 1.8rem;
+    background: #ffffff;
+    padding: 0.5rem 2rem;
     display: flex;
     gap: 2rem;
-    border-bottom: 1px solid #3f3f46;
+    border-bottom: 0.5px solid #c6c6c8;
 }
 
 .tab-btn {
     background: none;
     border: none;
     font-size: 1rem;
-    font-weight: 600;
+    font-weight: 500;
     font-family: inherit;
-    color: #b8b8c8;
-    padding: 0.7rem 0;
+    color: #8e8e93;
+    padding: 0.8rem 0;
     cursor: pointer;
-    transition: none;
+    transition: all 0.2s ease;
 }
 
 .tab-btn.active {
-    color: #eff0f1;
-    border-bottom: 2px solid #5294e2;
+    color: #0a84ff;
+    border-bottom: 2px solid #0a84ff;
     margin-bottom: -1px;
 }
 
@@ -62,21 +62,30 @@ body {
 .rules-group h3 {
     font-weight: 600;
     font-size: 1.3rem;
-    margin-bottom: 0.8rem;
-    border-left: 3px solid #5294e2;
-    padding-left: 0.8rem;
-    color: #f0f0f0;
+    margin-bottom: 1rem;
+    padding-left: 0.5rem;
+    color: #1c1c1e;
+    letter-spacing: -0.3px;
 }
 
 .rules-list {
     list-style: none;
+    background: #f9f9fb;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 0.5px solid #e9e9ef;
 }
 
 .rules-list li {
-    margin-bottom: 0.6rem;
-    padding: 0.2rem 0;
-    border-bottom: 1px dotted #3f3f46;
-    color: #d0d0dc;
+    padding: 0.9rem 1rem;
+    border-bottom: 0.5px solid #e9e9ef;
+    color: #2c2c2e;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+.rules-list li:last-child {
+    border-bottom: none;
 }
 
 .moder-section {
@@ -85,67 +94,78 @@ body {
 }
 
 .moder-toggle {
-    background: #31313c;
-    border: 1px solid #5a5a70;
-    padding: 0.5rem 1.2rem;
+    background: #0a84ff;
+    border: none;
+    padding: 0.7rem 1.5rem;
     font-family: inherit;
-    font-size: 0.9rem;
-    color: #e2e2f0;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: white;
     cursor: pointer;
-    border-radius: 6px;
+    border-radius: 40px;
+    transition: 0.2s;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.moder-toggle:hover {
+    background: #0063ce;
 }
 
 .moder-panel {
     margin-top: 1.5rem;
-    background: #23232b;
+    background: #f9f9fb;
+    border-radius: 18px;
     padding: 1rem;
-    border-radius: 6px;
+    text-align: left;
+    border: 0.5px solid #e9e9ef;
 }
 
 .projects-list {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.5rem;
 }
 
 .project-item {
     display: flex;
     align-items: center;
     gap: 1rem;
-    padding: 0.3rem 0;
+    padding: 0.8rem 1rem;
     cursor: pointer;
-    border-bottom: none;
-    background: none;
+    background: #ffffff;
+    border-radius: 14px;
+    transition: background 0.1s ease;
+    border: 0.5px solid #e9e9ef;
+}
+
+.project-item:hover {
+    background: #f2f2f5;
 }
 
 .project-avatar {
-    font-size: 28px;
-    width: 44px;
+    font-size: 32px;
+    width: 48px;
     text-align: center;
 }
 
 .project-name {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 500;
-    color: #e4e4f0;
-}
-
-.project-item:hover .project-name {
-    color: #88b4f0;
+    color: #1c1c1e;
 }
 
 .reload-hint {
     font-size: 0.7rem;
     text-align: right;
     margin-bottom: 1rem;
-    color: #8f8fa8;
+    color: #8e8e93;
 }
 
 footer {
-    border-top: 1px solid #3f3f46;
+    border-top: 0.5px solid #e9e9ef;
     margin-top: 0.5rem;
     padding: 1rem;
     text-align: center;
     font-size: 0.7rem;
-    color: #a0a0b8;
+    color: #8e8e93;
 }
