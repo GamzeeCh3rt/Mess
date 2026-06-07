@@ -1,182 +1,44 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+(function() {
+    async function refreshProjects() {
+        const container = document.getElementById('projectsContainer');
+        if (!container) return;
+        try {
+            const response = await fetch('projects.json?nocache=' + Date.now());
+            if (!response.ok) throw new Error('нет файла');
+            const projects = await response.json();
+            if (!projects.length) {
+                container.innerHTML = '<div class="project-row"><div class="project-icon">📁</div><div class="project-name">Нет проектов, добавь в projects.json</div></div>';
+                return;
+            }
+            container.innerHTML = projects.map(p => `
+                <div class="project-row" data-link="${p.link || '#'}">
+                    <div class="project-icon">${p.avatarEmoji ? p.avatarEmoji : (p.avatarUrl ? `<img src="${p.avatarUrl}" width="36" style="border-radius:20px;">` : '📄')}</div>
+                    <div class="project-name">${escapeHtml(p.name)}</div>
+                </div>
+            `).join('');
+            document.querySelectorAll('.project-row').forEach(row => {
+                const link = row.getAttribute('data-link');
+                if (link && link !== '#') {
+                    row.addEventListener('click', () => window.open(link, '_blank'));
+                }
+            });
+        } catch(e) {
+            container.innerHTML = '<div class="project-row"><div class="project-icon">⚠️</div><div class="project-name">projects.json не найден, создай файл</div></div>';
+        }
+    }
 
-body {
-    background: #1e1e24;
-    font-family: 'Noto Sans', 'Segoe UI', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
-    padding: 2rem 1rem;
-    color: #cdd6f4;
-}
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
 
-.plasma-container {
-    max-width: 1100px;
-    margin: 0 auto;
-    background: #2a2a32;
-    border-radius: 16px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-    overflow: hidden;
-}
-
-.nav-bar {
-    background: #1f1f26;
-    padding: 0.8rem 2rem;
-    display: flex;
-    gap: 2rem;
-    border-bottom: 1px solid #3a3a44;
-}
-
-.nav-btn {
-    background: none;
-    border: none;
-    font-size: 1.2rem;
-    font-weight: 600;
-    font-family: inherit;
-    color: #b4b4ce;
-    padding: 0.6rem 0;
-    cursor: pointer;
-    transition: 0.1s linear;
-    letter-spacing: 0.5px;
-}
-
-.nav-btn:hover {
-    color: #f5f5f7;
-}
-
-.nav-btn.active {
-    color: #e6e6fa;
-    border-bottom: 2px solid #6c6c8c;
-    margin-bottom: -1px;
-}
-
-.page {
-    display: none;
-    padding: 2rem 2rem 2rem 2rem;
-    animation: fade 0.2s ease;
-}
-
-.page.active-page {
-    display: block;
-}
-
-@keyframes fade {
-    from { opacity: 0; transform: translateY(6px);}
-    to { opacity: 1; transform: translateY(0);}
-}
-
-.rules-section {
-    margin-bottom: 2rem;
-}
-.section-title {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    border-left: 4px solid #6c6c8c;
-    padding-left: 1rem;
-    color: #f0f0fa;
-}
-.rule-block {
-    background: #20202a;
-    border-radius: 14px;
-    padding: 1rem 1.5rem;
-    margin-bottom: 1rem;
-}
-.rule-text {
-    line-height: 1.45;
-    color: #cdd6f4;
-}
-.rule-sub {
-    margin-top: 0.4rem;
-    padding-left: 1rem;
-    color: #b4b4d0;
-    font-size: 0.9rem;
-}
-.warning-note {
-    background: #2a2736;
-    border-left: 4px solid #b8860b;
-    padding: 0.8rem 1.2rem;
-    border-radius: 12px;
-    margin: 1rem 0;
-}
-.punishment-style {
-    color: #e6a88a;
-    font-size: 0.85rem;
-    margin-top: 6px;
-}
-.moder-block {
-    margin-top: 2rem;
-    text-align: center;
-}
-.moder-btn {
-    background: #2f2f3a;
-    border: 1px solid #5e5e7a;
-    padding: 0.6rem 1.4rem;
-    font-family: inherit;
-    font-weight: 500;
-    font-size: 0.9rem;
-    color: #e3e3f0;
-    cursor: pointer;
-    border-radius: 30px;
-    transition: all 0.1s;
-}
-.moder-btn:hover {
-    background: #3e3e4c;
-    border-color: #8a8ab0;
-}
-
-.projects-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-.project-row {
-    display: flex;
-    align-items: center;
-    gap: 1.2rem;
-    padding: 0.5rem 0.8rem;
-    cursor: pointer;
-    transition: background 0.08s linear;
-    border-radius: 12px;
-}
-.project-row:hover {
-    background: #2c2c38;
-}
-.project-icon {
-    width: 44px;
-    height: 44px;
-    background: transparent;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 32px;
-}
-.project-name {
-    font-size: 1.25rem;
-    font-weight: 500;
-    color: #e2e2f0;
-}
-.reload-tip {
-    font-size: 0.7rem;
-    text-align: right;
-    color: #8f8faa;
-    margin-bottom: 1rem;
-}
-
-hr {
-    border-color: #3f3f52;
-    margin: 1rem 0;
-}
-footer {
-    text-align: center;
-    padding: 1rem;
-    font-size: 0.7rem;
-    border-top: 1px solid #3a3a4a;
-    color: #8e8eb0;
-}
-@media (max-width: 640px) {
-    .page { padding: 1.2rem; }
-    .rule-block { padding: 0.8rem 1rem; }
-    .project-name { font-size: 1rem; }
-}
+    window.refreshProjects = refreshProjects;
+    if (document.getElementById('projectsContainer')) {
+        refreshProjects();
+    }
+})();
