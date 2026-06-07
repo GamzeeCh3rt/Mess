@@ -5,27 +5,26 @@
 }
 
 body {
-    background: #f5f5f7;
-    font-family: -apple-system, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', 'Segoe UI', system-ui, sans-serif;
+    background: #000000;
+    font-family: -apple-system, 'SF Pro Text', 'Helvetica Neue', 'Segoe UI', system-ui, sans-serif;
     padding: 2rem 1rem;
-    color: #1d1c1f;
+    color: #ffffff;
 }
 
-.breeze-box {
+.ios-container {
     max-width: 1100px;
     margin: 0 auto;
-    background: #ffffff;
-    border-radius: 20px;
-    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08), 0 0 0 0.5px rgba(0, 0, 0, 0.02);
+    background: #000000;
+    border-radius: 0px;
     overflow: hidden;
 }
 
-.breeze-tabs {
-    background: #ffffff;
+.ios-tabs {
+    background: #000000;
     padding: 0.5rem 2rem;
     display: flex;
     gap: 2rem;
-    border-bottom: 0.5px solid #c6c6c8;
+    border-bottom: 0.5px solid #2c2c2e;
 }
 
 .tab-btn {
@@ -34,7 +33,7 @@ body {
     font-size: 1rem;
     font-weight: 500;
     font-family: inherit;
-    color: #8e8e93;
+    color: #98989e;
     padding: 0.8rem 0;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -63,29 +62,45 @@ body {
     font-weight: 600;
     font-size: 1.3rem;
     margin-bottom: 1rem;
-    padding-left: 0.5rem;
-    color: #1c1c1e;
-    letter-spacing: -0.3px;
+    padding-left: 0rem;
+    color: #ffffff;
 }
 
 .rules-list {
     list-style: none;
-    background: #f9f9fb;
+    background: #1c1c1e;
     border-radius: 14px;
     overflow: hidden;
-    border: 0.5px solid #e9e9ef;
+    border: 0.5px solid #2c2c2e;
 }
 
 .rules-list li {
     padding: 0.9rem 1rem;
-    border-bottom: 0.5px solid #e9e9ef;
-    color: #2c2c2e;
+    border-bottom: 0.5px solid #2c2c2e;
+    color: #ebebf0;
     font-size: 0.95rem;
     line-height: 1.4;
 }
 
 .rules-list li:last-child {
     border-bottom: none;
+}
+
+.punishment-item {
+    padding: 0.9rem 1rem;
+    border-bottom: 0.5px solid #2c2c2e;
+    background: #1c1c1e;
+}
+
+.punishment-name {
+    font-weight: 500;
+    color: #ffffff;
+    margin-bottom: 0.25rem;
+}
+
+.punishment-desc {
+    font-size: 0.85rem;
+    color: #0a84ff;
 }
 
 .moder-section {
@@ -104,7 +119,6 @@ body {
     cursor: pointer;
     border-radius: 40px;
     transition: 0.2s;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .moder-toggle:hover {
@@ -113,11 +127,11 @@ body {
 
 .moder-panel {
     margin-top: 1.5rem;
-    background: #f9f9fb;
-    border-radius: 18px;
-    padding: 1rem;
+    background: #000000;
+    border-radius: 0px;
+    padding: 0;
     text-align: left;
-    border: 0.5px solid #e9e9ef;
+    overflow: hidden;
 }
 
 .projects-list {
@@ -132,14 +146,14 @@ body {
     gap: 1rem;
     padding: 0.8rem 1rem;
     cursor: pointer;
-    background: #ffffff;
+    background: #1c1c1e;
     border-radius: 14px;
     transition: background 0.1s ease;
-    border: 0.5px solid #e9e9ef;
+    border: 0.5px solid #2c2c2e;
 }
 
 .project-item:hover {
-    background: #f2f2f5;
+    background: #2c2c2e;
 }
 
 .project-avatar {
@@ -151,7 +165,7 @@ body {
 .project-name {
     font-size: 1.1rem;
     font-weight: 500;
-    color: #1c1c1e;
+    color: #ffffff;
 }
 
 .reload-hint {
@@ -162,7 +176,7 @@ body {
 }
 
 footer {
-    border-top: 0.5px solid #e9e9ef;
+    border-top: 0.5px solid #2c2c2e;
     margin-top: 0.5rem;
     padding: 1rem;
     text-align: center;
