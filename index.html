@@ -3,263 +3,387 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Ламповый уголок — проекты и правила</title>
+    <title>KDE Plasma Dark — правила и проекты</title>
     <style>
-        /* Базовые стили, но основные ты добавишь потом */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
-            background: #1a1d23;
-            font-family: 'Courier New', monospace;
+            background: #1e1e24;
+            font-family: 'Noto Sans', 'Segoe UI', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
             padding: 2rem 1rem;
-            color: #e9f1e0;
+            color: #cdd6f4;
         }
-        .container {
+
+        /* контейнер в стиле Breeze Dark */
+        .plasma-container {
             max-width: 1100px;
             margin: 0 auto;
-            background: #21262b;
-            border-radius: 28px;
-            border: 2px solid #4a5b6e;
+            background: #2a2a32;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
             overflow: hidden;
         }
-        .nav-menu {
-            background: #2d353c;
-            padding: 1rem 1.8rem;
+
+        /* панель навигации — без синего, серая */
+        .nav-bar {
+            background: #1f1f26;
+            padding: 0.8rem 2rem;
             display: flex;
             gap: 2rem;
-            border-bottom: 3px solid #6c8b5e;
+            border-bottom: 1px solid #3a3a44;
         }
+
         .nav-btn {
             background: none;
             border: none;
-            font-size: 1.6rem;
-            font-weight: bold;
-            font-family: monospace;
-            color: #e3cfa5;
+            font-size: 1.2rem;
+            font-weight: 600;
+            font-family: inherit;
+            color: #b4b4ce;
+            padding: 0.6rem 0;
             cursor: pointer;
+            transition: 0.1s linear;
+            letter-spacing: 0.5px;
         }
+
+        .nav-btn:hover {
+            color: #f5f5f7;
+        }
+
         .nav-btn.active {
-            color: #ffe1a0;
-            border-bottom: 3px solid #dcaa4a;
+            color: #e6e6fa;
+            border-bottom: 2px solid #6c6c8c;
+            margin-bottom: -1px;
         }
+
         .page {
             display: none;
-            padding: 2rem;
+            padding: 2rem 2rem 2rem 2rem;
+            animation: fade 0.2s ease;
         }
+
         .page.active-page {
             display: block;
         }
-        .rules-list {
-            background: #1e242b;
-            border-radius: 24px;
-            padding: 1rem 1.8rem;
-            border-left: 8px solid #c3813b;
+
+        @keyframes fade {
+            from { opacity: 0; transform: translateY(6px);}
+            to { opacity: 1; transform: translateY(0);}
         }
-        .rule-item {
+
+        /* ===== ПРАВИЛА — структура как в твоём списке ===== */
+        .rules-section {
+            margin-bottom: 2rem;
+        }
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
             margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px dotted #5f7550;
+            border-left: 4px solid #6c6c8c;
+            padding-left: 1rem;
+            color: #f0f0fa;
         }
-        .rule-title {
-            font-weight: bold;
-            color: #f3bc6c;
+        .rule-block {
+            background: #20202a;
+            border-radius: 14px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1rem;
         }
-        .punishment {
-            color: #e38b6f;
+        .rule-text {
+            line-height: 1.45;
+            color: #cdd6f4;
+        }
+        .rule-sub {
+            margin-top: 0.4rem;
+            padding-left: 1rem;
+            color: #b4b4d0;
+            font-size: 0.9rem;
+        }
+        .warning-note {
+            background: #2a2736;
+            border-left: 4px solid #b8860b;
+            padding: 0.8rem 1.2rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+        }
+        .punishment-style {
+            color: #e6a88a;
             font-size: 0.85rem;
-            margin-top: 4px;
+            margin-top: 6px;
         }
         .moder-block {
             margin-top: 2rem;
             text-align: center;
         }
         .moder-btn {
-            background: #3a4842;
-            border: 2px solid #c0a050;
-            padding: 0.8rem 1.4rem;
-            font-weight: bold;
+            background: #2f2f3a;
+            border: 1px solid #5e5e7a;
+            padding: 0.6rem 1.4rem;
+            font-family: inherit;
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: #e3e3f0;
             cursor: pointer;
-            border-radius: 40px;
-            color: #ffeaac;
+            border-radius: 30px;
+            transition: all 0.1s;
         }
-        .projects-grid {
+        .moder-btn:hover {
+            background: #3e3e4c;
+            border-color: #8a8ab0;
+        }
+
+        /* ===== ПРОЕКТЫ — только текст и иконка, без обводок ===== */
+        .projects-list {
             display: flex;
             flex-direction: column;
-            gap: 1.2rem;
+            gap: 1rem;
         }
-        .project-card {
-            background: #262f36;
-            border-radius: 28px;
+        .project-row {
             display: flex;
             align-items: center;
-            gap: 1.5rem;
-            padding: 1rem 1.6rem;
-            border: 1px solid #4b6a45;
+            gap: 1.2rem;
+            padding: 0.5rem 0.8rem;
             cursor: pointer;
+            transition: background 0.08s linear;
+            border-radius: 12px;
         }
-        .project-avatar {
-            width: 64px;
-            height: 64px;
-            background: #3a4a3a;
-            border-radius: 36px;
+        .project-row:hover {
+            background: #2c2c38;
+        }
+        .project-icon {
+            width: 44px;
+            height: 44px;
+            background: transparent;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 32px;
-            border: 2px solid #b69958;
         }
         .project-name {
-            font-size: 1.6rem;
-            font-weight: bold;
-            color: #eedb9b;
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: #e2e2f0;
         }
-        .reload-note {
+        .reload-tip {
             font-size: 0.7rem;
             text-align: right;
-            margin-bottom: 12px;
-            color: #bdae83;
+            color: #8f8faa;
+            margin-bottom: 1rem;
+        }
+
+        hr {
+            border-color: #3f3f52;
+            margin: 1rem 0;
         }
         footer {
             text-align: center;
             padding: 1rem;
-            border-top: 1px solid #3e4e3a;
             font-size: 0.7rem;
+            border-top: 1px solid #3a3a4a;
+            color: #8e8eb0;
         }
-        @media (max-width: 580px) {
-            .project-card { flex-direction: column; text-align: center; }
+        @media (max-width: 640px) {
+            .page { padding: 1.2rem; }
+            .rule-block { padding: 0.8rem 1rem; }
+            .project-name { font-size: 1rem; }
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <div class="nav-menu">
-        <button class="nav-btn active" data-page="projects">📁 ПРОЕКТЫ</button>
+<div class="plasma-container">
+    <div class="nav-bar">
+        <button class="nav-btn active" data-page="projects">📦 ПРОЕКТЫ</button>
         <button class="nav-btn" data-page="rules">📜 ПРАВИЛА</button>
     </div>
 
+    <!-- СТРАНИЦА ПРОЕКТЫ -->
     <div id="projectsPage" class="page active-page">
-        <div class="reload-note">⚡ projects.json — редактируй, добавляй проекты, обнови страницу</div>
-        <div id="projectsContainer" class="projects-grid">Загрузка...</div>
+        <div class="reload-tip">⚙️ projects.json — редактируй, после изменений обнови страницу</div>
+        <div id="projectsContainer" class="projects-list">Загрузка проектов...</div>
     </div>
 
+    <!-- СТРАНИЦА ПРАВИЛА -->
     <div id="rulesPage" class="page">
-        <div id="rulesNormal" class="rules-list"></div>
+        <div id="rulesFull"></div>
         <div class="moder-block">
-            <button id="moderToggleBtn" class="moder-btn">🔐 раздел для модераторов и стажеров</button>
+            <button id="moderToggleBtn" class="moder-btn">🔐 раздел для модераторов и стажёров</button>
         </div>
-        <div id="moderRulesPanel" style="display: none; margin-top: 2rem;">
-            <div id="rulesModer" class="rules-list"></div>
+        <div id="moderPanel" style="display: none; margin-top: 2rem;">
+            <div id="moderRulesContainer"></div>
         </div>
     </div>
-    <footer>ламповый уголок :: проекты и правила</footer>
+    <footer>plasma dark style · правила и проекты</footer>
 </div>
 
 <script>
-    // ========== ПРАВИЛА ==========
-    const normalRules = [
-        { title: "Спам / Флуд / ASCII графика", desc: "Запрещены повторяющиеся сообщения, бессмысленный набор символов и крупные ASCII рисунки." },
-        { title: "Контент 18+ (шок, стикеры)", desc: "Запрещены любые шокирующие, порнографические или жестокие медиа." },
-        { title: "Оскорбления, дискриминация, травля", desc: "Прямые или косвенные оскорбления участников, угрозы, буллинг." },
-        { title: "Реклама без разрешения", desc: "Размещение сторонних ссылок, приглашений, файлов без согласия администрации." },
-        { title: "Политические и религиозные провокации", desc: "Обсуждения, агитация, разжигающие конфликты на почве политики/религии." },
-        { title: "Выдача себя за администрацию / модерацию", desc: "Любые действия, имитирующие власть, фейковые аккаунты." },
-        { title: "Критика действий модерации", desc: "Публичное обсуждение решений модераторов в негативном ключе." },
-        { title: "Использование дополнительных аккаунтов", desc: "Обход блокировок или ограничений с помощью мультиаккаунтинга." },
-        { title: "Команды /report и @admin без причины", desc: "Ложные вызовы модерации отвлекают от работы." }
+    // ================= ПРАВИЛА (твои, точь-в-точь) =================
+    const fullRules = {
+        temporary: [
+            "Запрещены политические дискуссии, агитация и провокационные темы, не относящиеся к проекту",
+            "За чрезмерное использование нецензурной лексики будет выдаваться предупреждение"
+        ],
+        forbidden: [
+            "Спам", "ASCII графика", "Флуд",
+            "Отправка материалов с тегом 18+ (Шок-контент)",
+            "Отправка стикеров с тегом 18+",
+            "Отправка сообщений/материалов от имени канала (Разрешено только от личного аккаунта)",
+            "Содержание в профиле аккаунта неподобающего контента",
+            "Прямые или косвенные оскорбления других участников",
+            "Дискриминация по национальному, религиозному или иному признаку",
+            "Угрозы",
+            "Действия, направленные на провокацию конфликтов, травлю или преследование участников",
+            "Пропаганда насилия, оружия, наркотических средств, алкоголя, табачных изделий",
+            "Распространение сообщений/материалов, разглашающие любую информацию участника/модератора/администратора без его согласия",
+            "Размещение рекламы сторонних проектов/ресурсов/файлов без разрешения администрации",
+            "Распространение программ с уязвимостями/вирусами",
+            "Продажа игровых аккаунтов/карт",
+            "Распространение ложной информации",
+            "Попрошайничество",
+            "Выдавать себя за модерацию/администрацию проектов",
+            "Критика действий модерации/администрации",
+            "Неадекватная критика. Даже если вам не нравится какой-то контент в игре, не стоит оскорблять чужой труд",
+            "Использование дополнительных аккаунтов для обхода ограничений/блокировки",
+            "Использование команд /report и @admin без весомой причины"
+        ],
+        not_recommended: [
+            "Злоупотребление Caps Lock",
+            "Злоупотребление смайлами",
+            "Злоупотребление реакциями под сообщениями",
+            "Игнорирование предупреждений от модерации/администрации"
+        ],
+        info: [
+            "Незнание правил не освобождает от ответственности",
+            "Администрация и модерация оставляет за собой право удалять сообщения без объяснения причин",
+            "С 00:00 до 09:00 (МСК) действует ограничение на отправку медиа во всех чатах",
+            "Если Вас не устраивает поведение какого-либо участника, Вы можете написать жалобу о нем, использовав команду /report или @admin"
+        ],
+        report_conditions: [
+            "Команда доступна только в ответ на сообщение с нарушением",
+            "Сообщение должно содержать указание причины нарушения"
+        ]
+    };
+
+    // Правила с наказаниями для модераторов (сурово, но не перебор)
+    const moderPunishments = [
+        "Спам / Флуд / ASCII графика → Предупреждение + мут 1 час",
+        "Контент 18+ (шок, стикеры) → Бан на 5 дней / перманент при рецидиве",
+        "Оскорбления, дискриминация, травля → Мут 3 часа / бан до 14 дней",
+        "Реклама без разрешения → Кик + предупреждение, повтор — бан",
+        "Политические / религиозные провокации → Мут 6 часов / снятие прав у стажёра",
+        "Выдача себя за администрацию → Перманентный бан без апелляции",
+        "Критика действий модерации (публичная) → Выговор / лишение прав на 3 дня",
+        "Использование мультиаккаунтов → Блокировка основного аккаунта + 30 дней бана",
+        "Ложные /report / @admin → Предупреждение, при рецидиве мут 1 час"
     ];
 
-    const moderRules = [
-        { title: "Спам / Флуд / ASCII графика", punishment: "Предупреждение + мут 1 час" },
-        { title: "Контент 18+ (шок, стикеры)", punishment: "Бан на 5 дней / перманент при рецидиве" },
-        { title: "Оскорбления, дискриминация, травля", punishment: "Мут 3 часа / бан до 14 дней" },
-        { title: "Реклама без разрешения", punishment: "Кик + предупреждение, при повторе — бан" },
-        { title: "Политические и религиозные провокации", punishment: "Мут 6 часов / снятие прав у стажера" },
-        { title: "Выдача себя за администрацию", punishment: "Перманентный бан без права апелляции" },
-        { title: "Критика действий модерации (публичная)", punishment: "Выговор / лишение прав на 3 дня" },
-        { title: "Использование дополнительных аккаунтов", punishment: "Блокировка основного аккаунта + 30 дней бана" },
-        { title: "Команды /report и @admin без причины", punishment: "Предупреждение, при рецидиве — мут 1 час" }
-    ];
-
-    function renderNormalRules() {
-        const container = document.getElementById('rulesNormal');
+    function renderFullRules() {
+        const container = document.getElementById('rulesFull');
         if (!container) return;
-        container.innerHTML = normalRules.map(r => `
-            <div class="rule-item">
-                <div class="rule-title">⚠️ ${r.title}</div>
-                <div>${r.desc}</div>
+
+        let html = `
+            <div class="rules-section">
+                <div class="section-title">⏳ Временные правила</div>
+                ${fullRules.temporary.map(t => `<div class="rule-block"><div class="rule-text">${t}</div></div>`).join('')}
             </div>
-        `).join('');
+            <div class="rules-section">
+                <div class="section-title">🚫 Запрещено</div>
+                ${fullRules.forbidden.map(f => `<div class="rule-block"><div class="rule-text">${f}</div></div>`).join('')}
+            </div>
+            <div class="rules-section">
+                <div class="section-title">⚠️ Не рекомендуется</div>
+                ${fullRules.not_recommended.map(n => `<div class="rule-block"><div class="rule-text">${n}</div></div>`).join('')}
+            </div>
+            <div class="rules-section">
+                <div class="section-title">ℹ️ Прочая информация</div>
+                ${fullRules.info.map(i => `<div class="rule-block"><div class="rule-text">${i}</div></div>`).join('')}
+            </div>
+            <div class="rules-section">
+                <div class="section-title">📢 Жалоба (/report или @admin)</div>
+                ${fullRules.report_conditions.map(c => `<div class="rule-block"><div class="rule-text">• ${c}</div></div>`).join('')}
+            </div>
+        `;
+        container.innerHTML = html;
     }
 
     function renderModerRules() {
-        const container = document.getElementById('rulesModer');
+        const container = document.getElementById('moderRulesContainer');
         if (!container) return;
-        container.innerHTML = moderRules.map(r => `
-            <div class="rule-item">
-                <div class="rule-title">🛡️ ${r.title}</div>
-                <div class="punishment">Наказание: ${r.punishment}</div>
-            </div>
-        `).join('');
+        container.innerHTML = `
+            <div class="section-title">🛡️ Наказания для стажёров и модераторов</div>
+            ${moderPunishments.map(p => `<div class="rule-block"><div class="rule-text">${p}</div></div>`).join('')}
+            <div class="warning-note"><span class="rule-text">⚙️ Администрация может ужесточить наказание в зависимости от тяжести нарушения.</span></div>
+        `;
     }
 
-    // ========== ПРОЕКТЫ ИЗ JSON ==========
+    // ================= ЗАГРУЗКА ПРОЕКТОВ ИЗ JSON =================
     async function loadProjects() {
+        const container = document.getElementById('projectsContainer');
+        if (!container) return;
         try {
-            const response = await fetch('projects.json');
-            if (!response.ok) throw new Error('Файл projects.json не найден');
+            const response = await fetch('projects.json?t=' + Date.now());
+            if (!response.ok) throw new Error('нет файла');
             const projects = await response.json();
-            const container = document.getElementById('projectsContainer');
             if (!projects.length) {
-                container.innerHTML = '<div class="project-card" style="justify-content:center;">🤷‍♂️ проектов пока нет, добавь в projects.json</div>';
+                container.innerHTML = '<div class="project-row"><div class="project-icon">📁</div><div class="project-name">Нет проектов, добавь в projects.json</div></div>';
                 return;
             }
             container.innerHTML = projects.map(p => `
-                <div class="project-card" data-link="${p.link || '#'}">
-                    <div class="project-avatar">
-                        ${p.avatarEmoji ? p.avatarEmoji : (p.avatarUrl ? `<img src="${p.avatarUrl}" width="56" style="border-radius:40px;">` : '📦')}
-                    </div>
-                    <div class="project-info">
-                        <div class="project-name">${p.name}</div>
-                    </div>
+                <div class="project-row" data-link="${p.link || '#'}">
+                    <div class="project-icon">${p.avatarEmoji ? p.avatarEmoji : (p.avatarUrl ? `<img src="${p.avatarUrl}" width="36" style="border-radius:20px;">` : '📄')}</div>
+                    <div class="project-name">${escapeHtml(p.name)}</div>
                 </div>
             `).join('');
-            document.querySelectorAll('.project-card').forEach(card => {
-                const link = card.dataset.link;
+            document.querySelectorAll('.project-row').forEach(row => {
+                const link = row.getAttribute('data-link');
                 if (link && link !== '#') {
-                    card.addEventListener('click', () => window.open(link, '_blank'));
+                    row.addEventListener('click', () => window.open(link, '_blank'));
                 }
             });
         } catch (err) {
-            document.getElementById('projectsContainer').innerHTML = '<div class="project-card">❌ projects.json не загружен, создай файл с массивом проектов</div>';
+            container.innerHTML = '<div class="project-row"><div class="project-icon">⚠️</div><div class="project-name">projects.json не найден, создай файл</div></div>';
         }
     }
 
-    // ========== НАВИГАЦИЯ ==========
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    // ================= НАВИГАЦИЯ =================
     function setupNavigation() {
         const btns = document.querySelectorAll('.nav-btn');
-        const pages = {
-            projects: document.getElementById('projectsPage'),
-            rules: document.getElementById('rulesPage')
-        };
+        const projectsDiv = document.getElementById('projectsPage');
+        const rulesDiv = document.getElementById('rulesPage');
         btns.forEach(btn => {
             btn.addEventListener('click', () => {
-                const pageId = btn.dataset.page;
+                const page = btn.dataset.page;
                 btns.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-                Object.values(pages).forEach(p => p.classList.remove('active-page'));
-                if (pageId === 'projects') pages.projects.classList.add('active-page');
-                if (pageId === 'rules') pages.rules.classList.add('active-page');
+                if (page === 'projects') {
+                    projectsDiv.classList.add('active-page');
+                    rulesDiv.classList.remove('active-page');
+                    loadProjects(); // обновить при переключении
+                } else {
+                    rulesDiv.classList.add('active-page');
+                    projectsDiv.classList.remove('active-page');
+                }
             });
         });
     }
 
-    // модалка правил для модераторов
+    // модалка модераторов
     function setupModerToggle() {
         const btn = document.getElementById('moderToggleBtn');
-        const panel = document.getElementById('moderRulesPanel');
+        const panel = document.getElementById('moderPanel');
         if (btn && panel) {
             btn.addEventListener('click', () => {
                 if (panel.style.display === 'none') {
@@ -267,13 +391,13 @@
                     btn.textContent = '❌ скрыть раздел модераторов';
                 } else {
                     panel.style.display = 'none';
-                    btn.textContent = '🔐 раздел для модераторов и стажеров';
+                    btn.textContent = '🔐 раздел для модераторов и стажёров';
                 }
             });
         }
     }
 
-    renderNormalRules();
+    renderFullRules();
     renderModerRules();
     loadProjects();
     setupNavigation();
