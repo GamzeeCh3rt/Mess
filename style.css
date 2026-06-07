@@ -7,47 +7,42 @@
 body {
     background: #000000;
     font-family: -apple-system, 'SF Pro Text', 'Helvetica Neue', 'Segoe UI', system-ui, sans-serif;
-    padding: 2rem 1rem;
+    padding: 1rem;
     color: #ffffff;
 }
 
 .ios-container {
-    max-width: 1100px;
+    max-width: 900px;
     margin: 0 auto;
-    background: #000000;
-    border-radius: 0px;
-    overflow: hidden;
+    background: transparent;
 }
 
 .ios-tabs {
-    background: #000000;
-    padding: 0.5rem 2rem;
+    background: transparent;
+    padding: 0.5rem 1rem;
     display: flex;
-    gap: 2rem;
-    border-bottom: 0.5px solid #2c2c2e;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
 }
 
 .tab-btn {
     background: none;
     border: none;
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: 500;
     font-family: inherit;
-    color: #98989e;
-    padding: 0.8rem 0;
+    color: #8e8e93;
+    padding: 0.5rem 0;
     cursor: pointer;
-    transition: all 0.2s ease;
 }
 
 .tab-btn.active {
     color: #0a84ff;
-    border-bottom: 2px solid #0a84ff;
-    margin-bottom: -1px;
 }
 
 .page {
     display: none;
-    padding: 2rem;
+    padding: 0;
 }
 
 .page.active-page {
@@ -55,14 +50,14 @@ body {
 }
 
 .rules-group {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
 }
 
 .rules-group h3 {
     font-weight: 600;
-    font-size: 1.3rem;
-    margin-bottom: 1rem;
-    padding-left: 0rem;
+    font-size: 1.2rem;
+    margin-bottom: 0.75rem;
+    padding-left: 0.75rem;
     color: #ffffff;
 }
 
@@ -71,7 +66,6 @@ body {
     background: #1c1c1e;
     border-radius: 14px;
     overflow: hidden;
-    border: 0.5px solid #2c2c2e;
 }
 
 .rules-list li {
@@ -79,7 +73,6 @@ body {
     border-bottom: 0.5px solid #2c2c2e;
     color: #ebebf0;
     font-size: 0.95rem;
-    line-height: 1.4;
 }
 
 .rules-list li:last-child {
@@ -118,26 +111,18 @@ body {
     color: white;
     cursor: pointer;
     border-radius: 40px;
-    transition: 0.2s;
-}
-
-.moder-toggle:hover {
-    background: #0063ce;
 }
 
 .moder-panel {
     margin-top: 1.5rem;
-    background: #000000;
-    border-radius: 0px;
-    padding: 0;
-    text-align: left;
+    border-radius: 14px;
     overflow: hidden;
 }
 
 .projects-list {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.75rem;
 }
 
 .project-item {
@@ -148,8 +133,6 @@ body {
     cursor: pointer;
     background: #1c1c1e;
     border-radius: 14px;
-    transition: background 0.1s ease;
-    border: 0.5px solid #2c2c2e;
 }
 
 .project-item:hover {
@@ -177,7 +160,7 @@ body {
 
 footer {
     border-top: 0.5px solid #2c2c2e;
-    margin-top: 0.5rem;
+    margin-top: 1.5rem;
     padding: 1rem;
     text-align: center;
     font-size: 0.7rem;
